@@ -1,0 +1,306 @@
+---
+import { siteConfig, getWhatsAppUrl } from '../config/site';
+import { Phone, Mail, Navigation } from 'lucide-astro';
+import { siFacebook, siInstagram, siTiktok, siYoutube, siWhatsapp } from 'simple-icons/icons';
+import logoWhiteUrl from '../assets/logo-brandcomercial-white.svg?url';
+
+const currentYear = new Date().getFullYear();
+
+// Mapa de íconos de redes sociales (SVG paths de simple-icons)
+const socialIconMap: Record<string, string> = {
+  tiktok: siTiktok.path,
+  youtube: siYoutube.path,
+  facebook: siFacebook.path,
+  instagram: siInstagram.path
+};
+
+// Convertir objeto social → array con íconos SVG
+const socialLinks = Object.entries(siteConfig.social).map(([key, href]) => ({
+  label: key.charAt(0).toUpperCase() + key.slice(1),
+  href,
+  iconPath: socialIconMap[key] || siFacebook.path
+}));
+
+// Datos directos desde config
+const companyLinks = siteConfig.footerLinks.company;
+const helpLinks = siteConfig.footerLinks.help;
+const contactInfo = siteConfig.contact;
+const whatsappUrl = getWhatsAppUrl();
+const whatsappIconPath = siWhatsapp.path;
+---
+
+<footer class="site-footer">
+  <div class="footer__container">
+    <div class="footer__grid">
+      
+      <!-- Columna 1: Marca -->
+      <div class="footer__brand">
+        
+<a href="/" class="footer__logo" aria-label="Brandcomercial Spotz - Inicio">
+  <img 
+    src={logoWhiteUrl} 
+    alt="Brandcomercial Spotz" 
+    class="logo__img"
+    width="180"
+    height="40"
+  />
+</a>
+
+
+        <p class="footer__tagline">Conectando marcas con soluciones gráficas profesionales.</p>
+        
+        <!-- Redes sociales -->
+        <div class="footer__social" aria-label="Redes sociales">
+  {socialLinks.map((social) => (
+    <a 
+      href={social.href} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="social__link"
+      aria-label={social.label}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d={social.iconPath} />
+      </svg>
+    </a>
+  ))}
+</div>
+      </div>
+
+      <!-- Columna 2: Empresa -->
+      <nav class="footer__nav" aria-label="Empresa">
+        <h3 class="footer__heading">Empresa</h3>
+        <ul class="footer__links">
+          {companyLinks.map((link) => (
+            <li><a href={link.href} class="footer__link">{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Columna 3: Ayuda -->
+      <nav class="footer__nav" aria-label="Ayuda">
+        <h3 class="footer__heading">Ayuda</h3>
+        <ul class="footer__links">
+          {helpLinks.map((link) => (
+            <li><a href={link.href} class="footer__link">{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Columna 4: Contacto -->
+      <div class="footer__contact">
+        <h3 class="footer__heading">Contáctanos</h3>
+        <ul class="footer__contact-list">
+          <li>
+            <Phone size={18} class="contact__icon" />
+            <a href={contactInfo.phoneLink} class="footer__link">{contactInfo.phone}</a>
+          </li>
+          <li>
+            <Mail size={18} class="contact__icon" />
+            <a href={contactInfo.emailLink} class="footer__link">{contactInfo.email}</a>
+          </li>
+          <li>
+            <Navigation size={18} class="contact__icon" />
+            <span class="footer__link">{contactInfo.address}</span>
+          </li>
+        </ul>
+        
+        <!-- Botón WhatsApp -->
+    <a 
+  href={whatsappUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="footer__whatsapp"
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d={whatsappIconPath} />
+  </svg>
+  Cotize en vivo
+</a>
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer__bottom">
+      <p>© {currentYear} Brandcomercial Spotz. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-primary);
+    color: #fff;
+    padding: 4rem 0 2rem;
+    margin-top: 4rem;
+  }
+
+  .footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Grid: 1 col móvil → 2 col tablet → 4 col desktop */
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+@media (max-width: 768px) {
+  .footer__logo .logo__img {
+    height: 32px;
+  }
+}
+
+  @media (min-width: 768px) {
+    .footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer__grid {
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    }
+  }
+
+  /* Columna 1: Marca */
+  .footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .footer__logo .logo__icon {
+    color: var(--color-secondary);
+  }
+
+  .footer__logo .logo__img {
+  height: 40px;
+  width: auto;
+}
+
+  .logo__accent {
+    color: var(--color-secondary);
+  }
+
+  .footer__tagline {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Redes sociales */
+  .footer__social {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .social__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .social__link:hover {
+    background-color: var(--color-secondary);
+    transform: translateY(-3px);
+  }
+
+  /* Columnas 2-3: Navegación */
+  .footer__heading {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .footer__links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer__link {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+  }
+
+  .footer__link:hover {
+    color: var(--color-secondary);
+  }
+
+  /* Columna 4: Contacto */
+  .footer__contact-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer__contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .contact__icon {
+    color: var(--color-secondary);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  /* Botón WhatsApp */
+  .footer__whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #25D366;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .footer__whatsapp:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  /* Copyright */
+  .footer__bottom {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+  }
+
+  .footer__bottom p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.875rem;
+  }
+</style>

@@ -1,0 +1,68 @@
+/**
+ * CONFIGURACIÓN CENTRAL DEL SITIO
+ * ============================================
+ * Este archivo contiene TODOS los datos editables del sitio.
+ * Para cambiar menú, contacto, redes sociales, etc., edita aquí.
+ * Los componentes (Header, Footer) Los datos se importan automáticamente.
+ * ============================================
+ */
+
+export const siteConfig = {
+  // --- Información de la marca ---
+  brand: {
+    name: "Brandcomercial",
+    suffix: "Spotz",
+    tagline: "Conectando marcas",
+    description: "Especialistas en soluciones gráficas, impresión de gran formato e instalación profesional."
+  },
+
+  // --- Navegación principal (Header) ---
+  navigation: [
+    { label: "Inicio", href: "/", id: "inicio", icon: "home" },
+    { label: "Nosotros", href: "/nosotros", id: "nosotros", icon: "users" },
+    { label: "Servicios", href: "/servicios", id: "servicios", icon: "wrench" },
+    { label: "Productos", href: "/productos", id: "productos", icon: "package" },
+    { label: "Proyectos", href: "/proyectos", id: "proyectos", icon: "folder-open" },
+    { label: "Contacto", href: "/contacto", id: "contacto", icon: "headset", isButton: true }
+  ],
+
+  // --- Contacto ---
+  contact: {
+    phone: "+51 977 938 339",
+    phoneLink: "tel:+51977938339",
+    email: "ventas@brandcomercial.com.pe",
+    emailLink: "mailto:ventas@brandcomercial.com.pe",
+    address: "Cerro Centinela 154, San Borja, Lima",
+    whatsappNumber: "51977938339",
+    whatsappMessage: "Hola, me gustaría solicitar una cotización."
+  },
+
+  // --- Redes sociales (Footer) ---
+  social: {
+    tiktok: "https://tiktok.com/@brandcomercial",
+    youtube: "https://youtube.com/@brandcomercial",
+    facebook: "https://facebook.com/brandcomercial",
+    instagram: "https://instagram.com/brand_comercial"
+  },
+
+  // --- Links del Footer ---
+  footerLinks: {
+    company: [
+      { label: "Nosotros", href: "/nosotros" },
+      { label: "Productos", href: "/productos" },
+      { label: "Blog", href: "/blog" }
+    ],
+    // --- Links de ayuda ---
+    help: [
+      { label: "Contacto", href: "/contacto" },
+      { label: "Preguntas frecuentes", href: "/preguntas-frecuentes" },
+      { label: "Política de cookies", href: "/politica-cookies" }
+    ]
+  }
+};
+
+// Helper para generar URL de WhatsApp
+export const getWhatsAppUrl = () => {
+  const { whatsappNumber, whatsappMessage } = siteConfig.contact;
+  return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+};

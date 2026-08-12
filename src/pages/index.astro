@@ -1,17 +1,21 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Inicio" description="Especialistas en soluciones gráficas e impresión de gran formato.">
+  <div class="container text-center" style="padding: 8rem 0 4rem;">
+    <h1>Brandcomercial Spotz</h1>
+    <p class="tagline">Conectando marcas</p>
+    <p>Sitio en construcción. ¡Bienvenido!</p>
+  </div>
+
+  <!-- Relleno para probar scroll -->
+  <div class="container" style="padding: 2rem 0;">
+    {Array.from({ length: 20 }).map((_, i) => (
+      <section style="padding: 3rem 0; border-bottom: 1px solid #eee;">
+        <h2>Sección de prueba {i + 1}</h2>
+        <p>Este contenido es temporal para probar el scroll del header. Haz scroll hacia abajo para ver cómo cambia el color del header.</p>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
