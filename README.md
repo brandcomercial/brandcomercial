@@ -231,3 +231,9 @@ Sube el contenido de la carpeta `dist/` a cualquier hosting estático.
 ## 👤 Autor: Brandcomercial spotz
 
 Proyecto desarrollado como práctica profesional con Astro, siguiendo buenas prácticas de semántica HTML, CSS Mobile-First y arquitectura de componentes.
+
+SemVer
+Version de desarrollo:
+fase de lanzamiento: en construccion, estructura base.
+version: v0.1.0
+-------------------------
