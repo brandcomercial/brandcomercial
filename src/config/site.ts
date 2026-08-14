@@ -13,7 +13,8 @@ export const siteConfig = {
     name: "Brandcomercial",
     suffix: "Spotz",
     tagline: "Conectando marcas",
-    description: "Especialistas en soluciones gráficas, impresión de gran formato e instalación profesional."
+    description:
+      "Especialistas en soluciones gráficas, impresión de gran formato e instalación profesional.",
   },
 
   // --- Navegación principal (Header) ---
@@ -21,9 +22,25 @@ export const siteConfig = {
     { label: "Inicio", href: "/", id: "inicio", icon: "home" },
     { label: "Nosotros", href: "/nosotros", id: "nosotros", icon: "users" },
     { label: "Servicios", href: "/servicios", id: "servicios", icon: "wrench" },
-    { label: "Productos", href: "/productos", id: "productos", icon: "package" },
-    { label: "Proyectos", href: "/proyectos", id: "proyectos", icon: "folder-open" },
-    { label: "Contacto", href: "/contacto", id: "contacto", icon: "headset", isButton: true }
+    {
+      label: "Productos",
+      href: "/productos",
+      id: "productos",
+      icon: "package",
+    },
+    {
+      label: "Proyectos",
+      href: "/proyectos",
+      id: "proyectos",
+      icon: "folder-open",
+    },
+    {
+      label: "Contacto",
+      href: "/contacto",
+      id: "contacto",
+      icon: "headset",
+      isButton: true,
+    },
   ],
 
   // --- Contacto ---
@@ -34,7 +51,7 @@ export const siteConfig = {
     emailLink: "mailto:ventas@brandcomercial.com.pe",
     address: "Cerro Centinela 154, San Borja, Lima",
     whatsappNumber: "51977938339",
-    whatsappMessage: "Hola, me gustaría solicitar una cotización."
+    whatsappMessage: "Hola, me gustaría solicitar una cotización.",
   },
 
   // --- Redes sociales (Footer) ---
@@ -42,7 +59,7 @@ export const siteConfig = {
     tiktok: "https://tiktok.com/@brandcomercial",
     youtube: "https://youtube.com/@brandcomercial",
     facebook: "https://facebook.com/brandcomercial",
-    instagram: "https://instagram.com/brand_comercial"
+    instagram: "https://instagram.com/brand_comercial",
   },
 
   // --- Links del Footer ---
@@ -50,15 +67,47 @@ export const siteConfig = {
     company: [
       { label: "Nosotros", href: "/nosotros" },
       { label: "Productos", href: "/productos" },
-      { label: "Blog", href: "/blog" }
+      { label: "Blog", href: "/blog" },
     ],
     // --- Links de ayuda ---
     help: [
       { label: "Contacto", href: "/contacto" },
       { label: "Preguntas frecuentes", href: "/preguntas-frecuentes" },
-      { label: "Política de cookies", href: "/politica-cookies" }
-    ]
-  }
+      { label: "Política de cookies", href: "/politica-cookies" },
+    ],
+  },
+  
+  // --- Slides del Hero (Home) ---
+    heroSlides: [
+    {
+      eyebrow: "Impresión de gran formato",
+      title: "Gigantografías de alto impacto",
+      text: "Producción profesional para campañas, eventos y puntos de venta.",
+      cta: "Cotizar ahora",
+      url: "/contacto",
+      theme: "slide--print",
+      image: "/hero-print.png"
+    },
+    {
+      eyebrow: "Instalación profesional",
+      title: "Comunicación visual precisa",
+      text: "Viniles, lonas y señalética instalados con experiencia.",
+      cta: "Ver servicios",
+      url: "/servicios",
+      theme: "slide--install",
+      image: "/hero-install.png"
+    },
+    {
+      eyebrow: "Brandeo corporativo",
+      title: "Espacios que conectan",
+      text: "Recursos gráficos para transformar tu negocio en experiencia.",
+      cta: "Conocer más",
+      url: "/productos",
+      theme: "slide--brand",
+      image: "/hero-brand.png"
+    }
+  ],
+
 };
 
 // Helper para generar URL de WhatsApp
@@ -66,3 +115,4 @@ export const getWhatsAppUrl = () => {
   const { whatsappNumber, whatsappMessage } = siteConfig.contact;
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 };
+

@@ -237,3 +237,39 @@ Version de desarrollo:
 fase de lanzamiento: en construccion, estructura base.
 version: v0.1.0
 -------------------------
+
+
+---
+
+## 🎬 Componente: HeroSlider (Carrusel del Home)
+
+**Archivo:** `src/components/home/HeroSlider.astro`
+
+### ¿Qué hace?
+Carrusel principal del Home con 3 slides, auto-avance cada 6s, crossfade elegante y animaciones escalonadas.
+
+### Características
+- ✅ Crossfade suave entre slides (no "jala")
+- ✅ Animación de entrada: texto con difuminado, imagen desde la derecha
+- ✅ Auto-avance cada 6s + pausa al pasar el mouse
+- ✅ Controles: flechas, dots alargados, swipe táctil
+- ✅ Responsive: imágenes solo en desktop (≥1024px)
+- ✅ Loop infinito sin rebobinado visible
+- ✅ Accesible: ARIA roles, foco visible con teclado
+
+### ¿Cómo cambiar los slides?
+**Archivo:** `src/config/site.ts` → sección `heroSlides`
+
+```typescript
+heroSlides: [
+  {
+    eyebrow: "Texto pequeño arriba",
+    title: "Título grande del slide",
+    text: "Descripción breve",
+    cta: "Texto del botón",
+    url: "/pagina-destino",
+    theme: "slide--print",  // slide--print | slide--install | slide--brand
+    image: "/hero-print.png"  // Imagen en public/
+  },
+  // ... más slides
+]
