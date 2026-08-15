@@ -141,6 +141,32 @@ export const siteConfig = {
    
   ],
 
+  solutions: [
+    {
+      icon: "wrench",
+      title:"Instalación profedional",
+      text: "Viniles, lonas y señaleticas instalados con precisión y cuidado.",
+      url: "/servicios",
+      image: "/hero-install.png"   
+    },
+
+    {
+      icon: "package",
+      title:"Productos gráficos",
+      text: "Gigantografias, lona, rollscreen y más para tu marca",
+      url: "/productos",
+      image: "/hero-print.png"   
+    },
+
+    {
+      icon: "palette",
+      title:"Brandeo corporativo",
+      text: "Transformamos espacios en experiencias de marca",
+      url: "/proyectos",
+      image: "/hero-brand.png"   
+    }
+  ],
+
 };
 
 // Helper para generar URL de WhatsApp

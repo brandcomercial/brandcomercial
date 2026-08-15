@@ -56,13 +56,20 @@ const benefits = siteConfig.benefits.map((benefit) => ({
     margin-top: -20px; /* Desktop: superpuesto al Hero */
     padding-bottom: 3rem;
   }
+ 
+.benefits__container {
+  width: var(--container-width);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
 
+/* Tablet y móvil: mismo ancho que el Hero */
+@media (max-width: 1023px) {
   .benefits__container {
-    width: var(--container-width);
-    max-width: var(--container-max-width);
-    margin: 0 auto;
-    padding: 0 1.5rem;
+    width: var(--container-width-mobile); /* 92% */
   }
+}
 
   /* Grid: 1 col móvil → 2 col tablet → 4 col desktop */
   .benefits__grid {
@@ -85,12 +92,25 @@ const benefits = siteConfig.benefits.map((benefit) => ({
     }
   }
 
+/* DESPUÉS: 2 columnas en tablet (768-1279px), 4 columnas solo en desktop grande (≥1280px) */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .benefits__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
-  @media (min-width: 1024px) {
+@media (min-width: 1280px) {
+  .benefits__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+  /* @media (min-width: 1024px) {
     .benefits__grid {
       grid-template-columns: repeat(4, 1fr);
     }
-  }
+  } */
 
   /* Tarjeta individual: diseño horizontal */
   .benefit-card {
