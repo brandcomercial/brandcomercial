@@ -1,0 +1,224 @@
+---
+/**
+ * Carousel.astro — Carrusel genérico reutilizable (v2 final)
+ * ============================================
+ * - SIN flechas (navegación: indicadores + swipe + autoplay)
+ * - Indicadores rectangulares SIEMPRE visibles
+ * - itemsPerView vía props (controla CSS y JS)
+ * - Elementos creados por JS usan :global() (scoped no los alcanza)
+ * ============================================
+ */
+
+interface Props {
+  id: string;
+  itemsPerView?: { mobile: number; tablet: number; desktop: number };
+  autoplay?: number;
+}
+
+const {
+  id,
+  itemsPerView = { mobile: 1, tablet: 2, desktop: 3 },
+  autoplay = 4000
+} = Astro.props;
+---
+
+<div 
+  class="carousel" 
+  id={`carousel-${id}`}
+  style={`--items-mobile: ${itemsPerView.mobile}; --items-tablet: ${itemsPerView.tablet}; --items-desktop: ${itemsPerView.desktop};`}
+  data-items-mobile={itemsPerView.mobile}
+  data-items-tablet={itemsPerView.tablet}
+  data-items-desktop={itemsPerView.desktop}
+  data-autoplay={autoplay}
+>
+  <div class="carousel__viewport">
+    <div class="carousel__track">
+      <slot />
+    </div>
+  </div>
+
+  <!-- Indicadores siempre visibles -->
+  <div class="carousel__indicators" role="tablist" aria-label="Navegación del carrusel"></div>
+</div>
+
+<style>
+  /* ============================================
+     CAROUSEL.CSS v2 — sin flechas
+     ============================================ */
+
+  .carousel {
+    position: relative;
+    --gap: 1.5rem;
+    --items: var(--items-mobile, 1);
+  }
+
+  @media (min-width: 768px) {
+    .carousel { --items: var(--items-tablet, 2); }
+  }
+
+  @media (min-width: 1024px) {
+    .carousel { --items: var(--items-desktop, 3); }
+  }
+
+  .carousel__viewport {
+    overflow: hidden;
+  }
+
+  .carousel__track {
+    display: flex;
+    gap: var(--gap);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Ancho de las tarjetas inyectadas por slot */
+  .carousel__track > :global(*) {
+    flex: 0 0 calc((100% - (var(--gap) * (var(--items) - 1))) / var(--items));
+    min-width: 0;
+  }
+
+  /* Contenedor de indicadores (HTML estático → scoped funciona) */
+  .carousel__indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    min-height: 8px;
+  }
+
+  /* Botones creados por JS → OBLIGATORIO :global() */
+  .carousel__indicators :global(.carousel__indicator) {
+    width: 32px;
+    height: 4px;
+    border-radius: 4px;
+    background-color: rgba(10, 25, 47, 0.2);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  .carousel__indicators :global(.carousel__indicator.is-active) {
+    width: 48px;
+    background-color: var(--color-secondary);
+  }
+
+  .carousel__indicators :global(.carousel__indicator:hover) {
+    background-color: rgba(10, 25, 47, 0.4);
+  }
+
+  .carousel__indicators :global(.carousel__indicator:focus-visible) {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 3px;
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from '../../utils/scrollReveal';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initScrollReveal();
+
+    document.querySelectorAll<HTMLElement>('.carousel').forEach((carousel) => {
+      const track = carousel.querySelector<HTMLElement>('.carousel__track');
+      const indicatorsContainer = carousel.querySelector<HTMLElement>('.carousel__indicators');
+      if (!track || !indicatorsContainer) return;
+
+      const cards = Array.from(track.children) as HTMLElement[];
+      if (cards.length === 0) return;
+
+      const autoplayMs = Number(carousel.getAttribute('data-autoplay')) || 0;
+      let currentIndex = 0;
+      let autoTimer: ReturnType<typeof setInterval>;
+
+      const getVisibleCount = () => {
+        const w = window.innerWidth;
+        if (w >= 1024) return Number(carousel.getAttribute('data-items-desktop')) || 3;
+        if (w >= 768) return Number(carousel.getAttribute('data-items-tablet')) || 2;
+        return Number(carousel.getAttribute('data-items-mobile')) || 1;
+      };
+
+      // Generar indicadores según número de "páginas"
+      const buildIndicators = () => {
+        indicatorsContainer.innerHTML = '';
+        const visible = getVisibleCount();
+        const pages = Math.max(1, cards.length - visible + 1);
+        for (let i = 0; i < pages; i++) {
+          const btn = document.createElement('button');
+          btn.className = `carousel__indicator${i === currentIndex ? ' is-active' : ''}`;
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-label', `Ir a la posición ${i + 1}`);
+          btn.setAttribute('aria-selected', String(i === currentIndex));
+          btn.addEventListener('click', () => { goTo(i); startAuto(); });
+          indicatorsContainer.appendChild(btn);
+        }
+      };
+
+      const updateIndicators = () => {
+        indicatorsContainer.querySelectorAll('.carousel__indicator').forEach((ind, i) => {
+          const active = i === currentIndex;
+          ind.classList.toggle('is-active', active);
+          ind.setAttribute('aria-selected', String(active));
+        });
+      };
+
+      const goTo = (index: number) => {
+        const visible = getVisibleCount();
+        const maxIndex = Math.max(0, cards.length - visible);
+        currentIndex = Math.min(Math.max(index, 0), maxIndex);
+
+        const cardWidth = cards[0].offsetWidth;
+        const gap = parseFloat(getComputedStyle(track).gap) || 24;
+        track.style.transform = `translateX(-${currentIndex * (cardWidth + gap)}px)`;
+
+        updateIndicators();
+      };
+
+      const next = () => {
+        const maxIndex = Math.max(0, cards.length - getVisibleCount());
+        goTo(currentIndex >= maxIndex ? 0 : currentIndex + 1);
+      };
+
+      const prev = () => {
+        const maxIndex = Math.max(0, cards.length - getVisibleCount());
+        goTo(currentIndex <= 0 ? maxIndex : currentIndex - 1);
+      };
+
+      const startAuto = () => {
+        stopAuto();
+        if (autoplayMs > 0) autoTimer = setInterval(next, autoplayMs);
+      };
+      const stopAuto = () => clearInterval(autoTimer);
+
+      carousel.addEventListener('mouseenter', stopAuto);
+      carousel.addEventListener('mouseleave', startAuto);
+
+      // Swipe táctil
+      let touchStartX = 0;
+      track.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        stopAuto();
+      }, { passive: true });
+      track.addEventListener('touchend', (e) => {
+        const diff = touchStartX - (e as TouchEvent).changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) (diff > 0 ? next() : prev());
+        startAuto();
+      });
+
+      // Rebuild al cambiar tamaño
+      let resizeTimer: ReturnType<typeof setTimeout>;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          buildIndicators();
+          goTo(currentIndex);
+        }, 150);
+      });
+
+      buildIndicators();
+      goTo(0);
+      startAuto();
+    });
+  });
+</script>

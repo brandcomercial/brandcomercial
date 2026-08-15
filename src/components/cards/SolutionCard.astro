@@ -1,0 +1,203 @@
+---
+/**
+ * SolutionCard.astro — Tarjeta de solución reutilizable
+ * ============================================
+ * Uso: <SolutionCard solution={...} index={0} />
+ * - Recibe los datos por props (no depende de siteConfig)
+ * - Se puede usar en cualquier carrusel o grid
+ * - data-animate + data-delay para animación al scroll escalonada
+ * ============================================
+ */
+import { ArrowRight, Wrench, Package, Palette } from 'lucide-astro';
+
+interface Solution {
+  icon: string;
+  title: string;
+  text: string;
+  url: string;
+  image: string;
+}
+
+interface Props {
+  solution: Solution;
+  index?: number;
+}
+
+const { solution, index = 0 } = Astro.props;
+
+// Mapa de íconos (mismo que antes, pero encapsulado aquí)
+const iconMap: Record<string, any> = {
+  'wrench': Wrench,
+  'package': Package,
+  'palette': Palette
+};
+
+const Icon = iconMap[solution.icon] || Wrench;
+---
+
+<a 
+  href={solution.url} 
+  class="solution-card"
+  data-animate
+  data-delay={index * 150}
+>
+  <div class="solution-card__media">
+    <img 
+      src={solution.image} 
+      alt={solution.title} 
+      width="600" 
+      height="400" 
+      loading="lazy" 
+    />
+  </div>
+  <div class="solution-card__body">
+    <div class="solution-card__icon">
+      <Icon size={28} />
+    </div>
+    <h3 class="solution-card__title">{solution.title}</h3>
+    <p class="solution-card__text">{solution.text}</p>
+    <span class="solution-card__link" data-animate-link>
+      Ver más <ArrowRight size={18} />
+    </span>
+  </div>
+  <span class="solution-card__border"></span>
+</a>
+
+<style>
+  /* ============================================
+     SOLUTION-CARD.CSS — Diseño de la tarjeta
+     (estilos scoped: solo afectan a este componente)
+     ============================================ */
+
+  .solution-card {
+    display: block;
+    background-color: #fff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(10, 25, 47, 0.08);
+    border: 1px solid rgba(10, 25, 47, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    color: inherit;
+    position: relative;
+  }
+
+  .solution-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 35px rgba(10, 25, 47, 0.15);
+    border-color: rgba(255, 107, 53, 0.3);
+  }
+
+  /* Imagen vertical con zoom */
+  .solution-card__media {
+    height: 260px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0A192F 0%, #1E3A5F 100%);
+  }
+
+  .solution-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .solution-card:hover .solution-card__media img {
+    transform: scale(1.08);
+  }
+
+  /* Cuerpo */
+  .solution-card__body {
+    padding: 2.5rem 1.5rem 1.5rem;
+    position: relative;
+  }
+
+  /* Ícono huevo/gota superpuesto */
+  .solution-card__icon {
+    position: absolute;
+    top: -32px;
+    left: 1.5rem;
+    width: 64px;
+    height: 64px;
+    background-color: var(--color-secondary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 2;
+  }
+
+  .solution-card:hover .solution-card__icon {
+    background-color: var(--color-primary);
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  .solution-card__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.05rem, 1rem + 0.2vw, 1.2rem);
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .solution-card__text {
+    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+    line-height: 1.5;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  /* Link "Ver más" suave */
+  .solution-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-secondary);
+    transition: gap 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .solution-card:hover .solution-card__link {
+    gap: 0.8rem;
+  }
+
+  /* Borde inferior al hover */
+  .solution-card__border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--color-secondary);
+    transition: width 0.4s ease;
+  }
+
+  .solution-card:hover .solution-card__border {
+    width: 100%;
+  }
+
+  /* --- Animaciones al scroll (estado inicial) --- */
+  .solution-card[data-animate] {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s ease, transform 0.7s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .solution-card[data-animate].is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  [data-animate-link] {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s, gap 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .solution-card.is-visible [data-animate-link] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
