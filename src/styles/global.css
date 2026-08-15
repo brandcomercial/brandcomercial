@@ -38,6 +38,10 @@ a {
   --font-display: 'Roboto', sans-serif;
   --font-heading: 'Montserrat', sans-serif;
   --font-body: 'Roboto', sans-serif;
+
+  --container-width: 85%;
+  --container-max-width: 1400px;
+  --container-width-mobile: 92%;
 }
 
 /* 3. TIPOGRAFÍA BASE */

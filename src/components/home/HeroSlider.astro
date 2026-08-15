@@ -67,8 +67,8 @@ const slides = siteConfig.heroSlides;
 
   .hero {
     position: relative;
-    width: 85%;
-    max-width: 1400px;
+    width: var(--container-width);
+    max-width: var(--container-max-width);
     margin: 0 auto;
     height: clamp(420px, 65vh, 600px);
     overflow: hidden;
@@ -297,7 +297,7 @@ const slides = siteConfig.heroSlides;
 
   @media (max-width: 767px) {
     .hero {
-      width: 92%;
+      width: var(--container-width-mobile);
       height: clamp(380px, 75vh, 480px);
     }
 

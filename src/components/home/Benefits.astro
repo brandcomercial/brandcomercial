@@ -1,0 +1,235 @@
+---
+/**
+ * Benefits.astro — 4 tarjetas de beneficios sobre el slider
+ * ============================================
+ * - Datos desde configuración central (site.ts)
+ * - Íconos Lucide mapeados dinámicamente
+ * - Superpuesto ligeramente sobre el Hero
+ * - Mobile-First: 1 col móvil → 2 col tablet → 4 col desktop
+ * ============================================
+ */
+import { siteConfig } from '../../config/site';
+import { BadgeCheck, ClipboardList, Printer, ShieldCheck } from 'lucide-astro';
+import { Star } from 'lucide-astro';
+
+// Mapa: nombre del ícono (texto en config) → componente Lucide
+const iconMap: Record<string, any> = {
+  'badge-check': BadgeCheck,
+  'clipboard-list': ClipboardList,
+  'printer': Printer,
+  'shield-check': ShieldCheck,
+  'star': Star
+};
+
+const benefits = siteConfig.benefits.map((benefit) => ({
+  ...benefit,
+  Icon: iconMap[benefit.icon] || BadgeCheck
+}));
+---
+
+<section class="benefits" aria-label="Beneficios de Brandcomercial">
+  <div class="benefits__container container">
+    <ul class="benefits__grid">
+  {benefits.map((benefit) => (
+    <li class="benefit-card">
+      <div class="benefit-card__icon">
+        <benefit.Icon size={40} />
+      </div>
+      <div class="benefit-card__content">
+        <h3 class="benefit-card__title">{benefit.title}</h3>
+        <p class="benefit-card__text">{benefit.text}</p>
+      </div>
+    </li>
+  ))}
+</ul>
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     BENEFITS.CSS v3 — Control de altura y margen responsive
+     ============================================ */
+
+  .benefits {
+    position: relative;
+    z-index: 5;
+    margin-top: -20px; /* Desktop: superpuesto al Hero */
+    padding-bottom: 3rem;
+  }
+
+  .benefits__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Grid: 1 col móvil → 2 col tablet → 4 col desktop */
+  .benefits__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    list-style: none;
+  }
+  
+  @media (max-width: 767px){
+    .benefits__container{
+      width: var(--container-width-mobile);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .benefits__grid {
+      grid-template-columns: repeat(2, 1fr);
+      
+    }
+  }
+
+
+  @media (min-width: 1024px) {
+    .benefits__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Tarjeta individual: diseño horizontal */
+  .benefit-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 4px 20px rgba(10, 25, 47, 0.08);
+    transition: all 0.3s ease;
+    cursor: default;
+    min-height: 140px; /* Altura mínima consistente */
+  }
+
+  /* Hover: inversión de colores */
+  .benefit-card:hover {
+    background-color: var(--color-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(10, 25, 47, 0.2);
+  }
+
+  /* Ícono: círculo a la izquierda */
+  .benefit-card__icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    /* background-color: rgba(255, 107, 53, 0.1); */
+    color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .benefit-card:hover .benefit-card__icon {
+   /* background-color: rgba(255, 255, 255, 0.15);*/
+    color: #fff;
+  }
+
+  /* Contenido: título + texto a la derecha del ícono */
+  .benefit-card__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .benefit-card__title {
+    font-family: var(--font-heading);
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  .benefit-card:hover .benefit-card__title {
+    color: #fff;
+  }
+
+  .benefit-card__text {
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.9rem);
+    line-height: 1.5;
+    color: var(--color-text);
+    transition: color 0.3s ease;
+  }
+
+  .benefit-card:hover .benefit-card__text {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+ @media (min-width: 1025px) {
+    .benefits {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+
+
+@media (min-width: 1024) and (max-width: 1280px) {
+    .benefits {
+      padding: 0 1rem;
+      margin-top: -30px; /* Menos superposición en tablet */
+    }
+
+    
+  }
+
+
+
+
+  /* ============================================
+     TABLET (768px - 1023px): ajustar altura y margen
+     ============================================ */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .benefits {
+      padding: 0 2rem;
+      margin-top: 30px; /* Menos superposición en tablet */
+    }
+
+    .benefit-card {
+      min-height: 140px;
+      align-items: center; /*centra al contenido */
+      padding: 1.5rem;
+    }
+
+    .benefit-card__icon {
+      width: 52px;
+      height: 52px;
+    }
+  }
+
+  /* ============================================
+     MÓVIL (< 768px): sin superposición, altura controlada
+     ============================================ */
+  @media (max-width: 767px) {
+    .benefits {
+      margin-top: 2rem; 
+      padding-bottom: 2rem;
+    }
+
+    .benefit-card {
+      min-height: 120px;
+      align-items: center;
+      padding: 1rem;
+      gap: 0.75rem;
+    }
+
+    .benefit-card__icon {
+      width: 54px;
+      height: 54px;
+    }
+
+    .benefit-card__title {
+      font-size: 0.95rem;
+    }
+
+    .benefit-card__text {
+      font-size: 0.85rem;
+    }
+  }
+</style>

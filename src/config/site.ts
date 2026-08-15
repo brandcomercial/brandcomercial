@@ -7,6 +7,8 @@
  * ============================================
  */
 
+import Benefits from "../components/home/Benefits.astro";
+
 export const siteConfig = {
   // --- Información de la marca ---
   brand: {
@@ -106,6 +108,37 @@ export const siteConfig = {
       theme: "slide--brand",
       image: "/hero-brand.png"
     }
+  ],
+
+    // --- Beneficios (tarjetas sobre el slider) ---
+  benefits: [
+    {
+      icon: "badge-check",
+      title: "Asesoría personalizada",
+      text: "En cada paso de tu proyecto."
+    },
+    {
+      icon: "clipboard-list",
+      title: "Soluciones personalizada",
+      text: "Proyectos a medida y escalables"
+    },
+    {
+      icon: "printer",
+      title: "Impresión de gran formato",
+      text: "Gigantografías, Viniles, Lonas, Letreros."
+    },
+    {
+      icon: "shield-check",
+      title: "Instalación y Brandeos",
+      text: "Trabajos de calidad y con experiencia."
+    },
+
+    /* {
+      icon: "",
+      title: "",
+      text: ""
+    } */
+   
   ],
 
 };

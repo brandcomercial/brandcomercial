@@ -249,7 +249,7 @@ version: v0.1.0
 Carrusel principal del Home con 3 slides, auto-avance cada 6s, crossfade elegante y animaciones escalonadas.
 
 ### Características
-- ✅ Crossfade suave entre slides (no "jala")
+- ✅ Crossfade suave entre slides
 - ✅ Animación de entrada: texto con difuminado, imagen desde la derecha
 - ✅ Auto-avance cada 6s + pausa al pasar el mouse
 - ✅ Controles: flechas, dots alargados, swipe táctil
@@ -272,4 +272,32 @@ heroSlides: [
     image: "/hero-print.png"  // Imagen en public/
   },
   // ... más slides
+]
+
+---
+
+## 🃏 Componente: Benefits (Tarjetas de beneficios)
+
+**Archivo:** `src/components/home/Benefits.astro`
+
+### ¿Qué hace?
+4 tarjetas horizontales que se superponen ligeramente al Hero (desktop/tablet) y quedan debajo en móvil.
+
+### Características
+- ✅ Diseño horizontal: ícono a la izquierda, texto a la derecha
+- ✅ Hover con inversión de colores (blanco → azul noche)
+- ✅ Responsive: 1 col móvil → 2 col tablet → 4 col desktop
+- ✅ Superposición controlada por breakpoint (-60px desktop, -40px tablet, sin superposición móvil)
+
+### ¿Cómo cambiar los beneficios?
+**Archivo:** `src/config/site.ts` → sección `benefits`
+
+```typescript
+benefits: [
+  {
+    icon: "badge-check",   // Nombre del ícono Lucide
+    title: "Título de la tarjeta",
+    text: "Descripción breve"
+  },
+  // ... más tarjetas
 ]
