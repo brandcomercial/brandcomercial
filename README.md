@@ -301,3 +301,40 @@ benefits: [
   },
   // ... más tarjetas
 ]
+
+---
+
+## 🧩 Arquitectura de componentes reutilizables
+
+### Estructura
+
+### Principio aplicado: Separación de responsabilidades
+
+| Componente | Responsabilidad única | Reutilizable para |
+|---|---|---|
+| `Carousel.astro` | Mecanismo de deslizar (track, indicadores, autoplay, swipe) | Cualquier carrusel |
+| `SolutionCard.astro` | Diseño visual de la tarjeta | Cualquier contenedor |
+| `Solutions.astro` | Componer la sección (header + carrusel + tarjetas) | — (específico del Home) |
+| `scrollReveal.ts` | Animar elementos al entrar en viewport | Todas las secciones |
+
+### Usar el Carousel en otra página
+
+```astro
+---
+import Carousel from '../components/ui/Carousel.astro';
+import ProductCard from '../components/cards/ProductCard.astro';
+---
+
+<Carousel id="products" itemsPerView={{ mobile: 1, tablet: 2, desktop: 4 }} autoplay={5000}>
+  {products.map((p, i) => <ProductCard product={p} index={i} />)}
+</Carousel>
+
+
+---
+
+## 🏷️ PASO: Tag v0.4.0 + Push a GitHub
+
+```bash
+git tag -a v0.4.0 -m "Arquitectura reutilizable: Carousel genérico + SolutionCard + scrollReveal"
+git push
+git push --tags

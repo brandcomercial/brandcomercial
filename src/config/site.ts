@@ -167,6 +167,19 @@ export const siteConfig = {
     }
   ],
 
+  promoBanners: [
+    {
+      title: "Impresiones publicitarias para tu hogar o negocio",
+      text: "Descubre cómo nuestras impresiones publicitarias pueden transformar tu hogar o negocio. <span class='promo-highlight'>Imprime tus ideas</span> en gran formato y a grandes escalas.",
+      image: "/hero-brand.png"
+    },
+    {
+      title: "Decoración y brandeo publicitario",
+      text: "Ofrecemos un servicio especializado en la instalación de viniles y lonas, garantizando <span class='promo-highlight'>calidad y durabilidad</span> en cada proyecto.",
+      image: "/hero-install.png"
+    }
+  ],
+
 };
 
 // Helper para generar URL de WhatsApp
