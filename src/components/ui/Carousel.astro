@@ -8,12 +8,13 @@
  * - Elementos creados por JS usan :global() (scoped no los alcanza)
  * ============================================
  */
-
 interface Props {
   id: string;
   itemsPerView?: { mobile: number; tablet: number; desktop: number };
   autoplay?: number;
+  dotsOverlay?: boolean; //dots encima del slider
 }
+
 
 const {
   id,

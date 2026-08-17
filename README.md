@@ -338,3 +338,30 @@ import ProductCard from '../components/cards/ProductCard.astro';
 git tag -a v0.4.0 -m "Arquitectura reutilizable: Carousel genérico + SolutionCard + scrollReveal"
 git push
 git push --tags
+
+
+---
+
+## 🛍️ CatalogShowcase (Home)
+
+Slider promocional + 2 cards de producto, estilo e-commerce responsive.
+
+### Sistema de alturas determinísticas
+
+| Breakpoint | Slider | Cards | Layout |
+|---|---|---|---|
+| <480px | 240px | 170px | Apilado |
+| 480-767px | 260px | 180px | Apilado |
+| 768-960px | 300px | 190px | Cards lado a lado |
+| 961-1279px | 340px | 160px | Fila 65/35 |
+| 1280-1439px | 400px | 190px | Fila 65/35 |
+| ≥1440px | 440px | 210px | Fila 65/35 |
+
+> 🔑 **Regla de proporción:** `2 × card + gap = slider`. En desktop las alturas se calculan matemáticamente para que la grid nunca se rompa.
+
+### Cómo ajustar alturas
+
+Edita las variables en `CatalogShowcase.astro`:
+
+```css
+.catalog { --slider-h: 240px; --card-h: 170px; }

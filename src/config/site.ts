@@ -78,9 +78,9 @@ export const siteConfig = {
       { label: "Política de cookies", href: "/politica-cookies" },
     ],
   },
-  
+
   // --- Slides del Hero (Home) ---
-    heroSlides: [
+  heroSlides: [
     {
       eyebrow: "Impresión de gran formato",
       title: "Gigantografías de alto impacto",
@@ -88,7 +88,7 @@ export const siteConfig = {
       cta: "Cotizar ahora",
       url: "/contacto",
       theme: "slide--print",
-      image: "/hero-print.png"
+      image: "/hero-print.png",
     },
     {
       eyebrow: "Instalación profesional",
@@ -97,7 +97,7 @@ export const siteConfig = {
       cta: "Ver servicios",
       url: "/servicios",
       theme: "slide--install",
-      image: "/hero-install.png"
+      image: "/hero-install.png",
     },
     {
       eyebrow: "Brandeo corporativo",
@@ -106,31 +106,31 @@ export const siteConfig = {
       cta: "Conocer más",
       url: "/productos",
       theme: "slide--brand",
-      image: "/hero-brand.png"
-    }
+      image: "/hero-brand.png",
+    },
   ],
 
-    // --- Beneficios (tarjetas sobre el slider) ---
+  // --- Beneficios (tarjetas sobre el slider) ---
   benefits: [
     {
       icon: "badge-check",
       title: "Asesoría personalizada",
-      text: "En cada paso de tu proyecto."
+      text: "En cada paso de tu proyecto.",
     },
     {
       icon: "clipboard-list",
       title: "Soluciones personalizada",
-      text: "Proyectos a medida y escalables"
+      text: "Proyectos a medida y escalables",
     },
     {
       icon: "printer",
       title: "Impresión de gran formato",
-      text: "Gigantografías, Viniles, Lonas, Letreros."
+      text: "Gigantografías, Viniles, Lonas, Letreros.",
     },
     {
       icon: "shield-check",
       title: "Instalación y Brandeos",
-      text: "Trabajos de calidad y con experiencia."
+      text: "Trabajos de calidad y con experiencia.",
     },
 
     /* {
@@ -138,48 +138,82 @@ export const siteConfig = {
       title: "",
       text: ""
     } */
-   
   ],
 
   solutions: [
     {
       icon: "wrench",
-      title:"Instalación profedional",
+      title: "Instalación profedional",
       text: "Viniles, lonas y señaleticas instalados con precisión y cuidado.",
       url: "/servicios",
-      image: "/hero-install.png"   
+      image: "/hero-install.png",
     },
 
     {
       icon: "package",
-      title:"Productos gráficos",
+      title: "Productos gráficos",
       text: "Gigantografias, lona, rollscreen y más para tu marca",
       url: "/productos",
-      image: "/hero-print.png"   
+      image: "/hero-print.png",
     },
 
     {
       icon: "palette",
-      title:"Brandeo corporativo",
+      title: "Brandeo corporativo",
       text: "Transformamos espacios en experiencias de marca",
       url: "/proyectos",
-      image: "/hero-brand.png"   
-    }
+      image: "/hero-brand.png",
+    },
   ],
 
   promoBanners: [
     {
       title: "Impresiones publicitarias para tu hogar o negocio",
       text: "Descubre cómo nuestras impresiones publicitarias pueden transformar tu hogar o negocio. <span class='promo-highlight'>Imprime tus ideas</span> en gran formato y a grandes escalas.",
-      image: "/hero-brand.png"
+      image: "/hero-brand.png",
     },
     {
       title: "Decoración y brandeo publicitario",
       text: "Ofrecemos un servicio especializado en la instalación de viniles y lonas, garantizando <span class='promo-highlight'>calidad y durabilidad</span> en cada proyecto.",
-      image: "/hero-install.png"
-    }
+      image: "/hero-install.png",
+    },
   ],
 
+  // --- Catálogo destacado (slider + cards) ---
+  catalogSlides: [
+    {
+      title: "Marco Selfie Decorativo",
+      text: "Tamaño Personalizado con diseños ajustados a tus necesidades y espacio de foto.",
+      cta: "Ver catálogo",
+      url: "/productos",
+      image: "/chica-selfie.png",
+    },
+    {
+      title: "Sticker troquelados",
+      text: "Impresión personalizada con corte preciso, que elevan la presentación de tus productos, promociones y empaques.",
+      cta: "Ver Catálogo",
+      url: "/proyectos",
+      image: "/sticker-troqueado.png",
+    },
+  ],
+  catalogCards: [
+    {
+      title: "Parante Rollscreen",
+      text: "Estructura de aluminio y sistema enrollable. Para lugares estratégicos.",
+      cta: "Ver más",
+      url: "/productos",
+      image: "/rollscreen.png",
+      theme: "orange",
+    },
+    {
+      title: "Modulo de mesa",
+      text: "Counters publicitarios de PVC: para activaciones, ferias y puntos de venta",
+      cta: "Ver más",
+      url: "/productos",
+      image: "/counter.png",
+      theme: "blue",
+    },
+  ],
 };
 
 // Helper para generar URL de WhatsApp
@@ -187,4 +221,3 @@ export const getWhatsAppUrl = () => {
   const { whatsappNumber, whatsappMessage } = siteConfig.contact;
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 };
-
