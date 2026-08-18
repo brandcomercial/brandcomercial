@@ -1,0 +1,187 @@
+---
+/**
+ * FinalCta.astro — Banner final de conversión (WhatsApp)
+ * ============================================
+ * - Fondo degradado azul noche + naranja sutil
+ * - Centrado vertical y horizontal
+ * - Botón WhatsApp grande con icono
+ * - Animación al scroll (fade-up)
+ * - Responsive: alturas determinísticas por breakpoint
+ * ============================================
+ */
+import { siteConfig } from '../../config/site';
+
+const { eyebrow, title, text, cta, url } = siteConfig.finalCta;
+---
+
+<section class="final-cta" aria-label="Llamado a la acción final">
+  <div class="final-cta__container" data-animate>
+    <p class="final-cta__eyebrow">{eyebrow}</p>
+    <h2 class="final-cta__title">{title}</h2>
+    <p class="final-cta__text">{text}</p>
+    <a href={url} target="_blank" rel="noopener noreferrer" class="final-cta__btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+      {cta}
+    </a>
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     FINAL-CTA.CSS — Alturas determinísticas
+     ============================================ */
+
+  .final-cta {
+    --cta-h: 280px;
+    padding: 2rem 0rem;
+    background-color: var(--color-bg);
+  }
+
+  @media (min-width: 480px) { .final-cta { --cta-h: 250px; } }
+  @media (min-width: 768px) { .final-cta { --cta-h: 270px; } }
+  @media (min-width: 961px) { .final-cta { --cta-h: 310px; } }
+  @media (min-width: 1280px) { .final-cta { --cta-h: 310px; } }
+  @media (min-width: 1440px) { .final-cta { --cta-h: 380px; } }
+
+  .final-cta__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    height: var(--cta-h);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #0A192F 0%, #1E3A5F 50%, #FF6B35 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 480px) { .final-cta__container { padding: 1.75rem; } }
+  @media (min-width: 768px) { .final-cta__container { padding: 2rem; } }
+  @media (min-width: 961px) { .final-cta__container { padding: 2.5rem; } }
+  @media (min-width: 1280px) { .final-cta__container { padding: 3rem; } }
+  @media (min-width: 1440px) { .final-cta__container { padding: 3.5rem; } }
+
+  /* Patrón decorativo sutil */
+  .final-cta__container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .final-cta__eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary);
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 768px) { .final-cta__eyebrow { font-size: 0.9rem; } }
+
+  .final-cta__title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    line-height: 1.15;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 480px) { .final-cta__title { font-size: 1.5rem; } }
+  @media (min-width: 768px) { .final-cta__title { font-size: 1.7rem; } }
+  @media (min-width: 961px) { .final-cta__title { font-size: 2rem; } }
+  @media (min-width: 1280px) { .final-cta__title { font-size: 2.3rem; } }
+  @media (min-width: 1440px) { .final-cta__title { font-size: 2.6rem; } }
+
+  .final-cta__text {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 500px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 480px) { .final-cta__text { font-size: 0.85rem; } }
+  @media (min-width: 768px) { .final-cta__text { font-size: 0.9rem; } }
+  @media (min-width: 961px) { .final-cta__text { font-size: 1rem; } }
+  @media (min-width: 1280px) { .final-cta__text { font-size: 1.05rem; } }
+  @media (min-width: 1440px) { .final-cta__text { font-size: 1.1rem; } }
+
+  /* Botón WhatsApp */
+  .final-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #25D366; /* Verde WhatsApp */
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  }
+
+  @media (min-width: 768px) {
+    .final-cta__btn {
+      padding: 0.85rem 1.75rem;
+      font-size: 1rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .final-cta__btn {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  .final-cta__btn:hover {
+    background-color: #1DA851;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+  }
+
+  .final-cta__btn svg {
+    flex-shrink: 0;
+  }
+
+  /* Animación al scroll */
+  .final-cta__container[data-animate] {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .final-cta__container[data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from '../../utils/scrollReveal';
+  document.addEventListener('DOMContentLoaded', () => initScrollReveal());
+</script>

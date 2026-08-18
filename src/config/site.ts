@@ -97,7 +97,7 @@ export const siteConfig = {
       cta: "Ver servicios",
       url: "/servicios",
       theme: "slide--install",
-      image: "/hero-install.png",
+      image: "/instalador.png",
     },
     {
       eyebrow: "Brandeo corporativo",
@@ -146,7 +146,7 @@ export const siteConfig = {
       title: "Instalación profedional",
       text: "Viniles, lonas y señaleticas instalados con precisión y cuidado.",
       url: "/servicios",
-      image: "/hero-install.png",
+      image: "/instalador-banner-promo.png",
     },
 
     {
@@ -175,26 +175,44 @@ export const siteConfig = {
     {
       title: "Decoración y brandeo publicitario",
       text: "Ofrecemos un servicio especializado en la instalación de viniles y lonas, garantizando <span class='promo-highlight'>calidad y durabilidad</span> en cada proyecto.",
-      image: "/hero-install.png",
+      image: "/instalador-banner-promo.png",
     },
   ],
 
   // --- Catálogo destacado (slider + cards) ---
   catalogSlides: [
     {
+      title: "Ruleta Publicitaria",
+      text: "Tu ruleta publicitaria a medida. Atrae miradas, interactúa con tu público y multiplica tus ventas.",
+      cta: "Ver Catálogo",
+      url: "/catalogo",
+      image: "/corporeo ruleta perspectiva.png",
+    },
+    
+    {
       title: "Marco Selfie Decorativo",
       text: "Tamaño Personalizado con diseños ajustados a tus necesidades y espacio de foto.",
       cta: "Ver catálogo",
-      url: "/productos",
-      image: "/chica-selfie.png",
+      url: "/catalogo",
+      image: "/selfie2.png",
     },
+
     {
-      title: "Sticker troquelados",
-      text: "Impresión personalizada con corte preciso, que elevan la presentación de tus productos, promociones y empaques.",
+      title: "Stickers troquelados",
+      text: "Dale personalidad a tus empaques con vinil adhesivo full color y cortes precisos según la silueta de tu marca.",
       cta: "Ver Catálogo",
-      url: "/proyectos",
+      url: "/catalogo",
       image: "/sticker-troqueado.png",
     },
+
+    {
+      title: "Parante Tijera",
+      text: "Tu publicidad exterior en el lugar correcto. Parante resistente y fácil de mover, perfecto para exhibir tus promociones.",
+      cta: "Ver Catálogo",
+      url: "/catalogo",
+      image: "/caballete madera.png",
+    },
+
   ],
   catalogCards: [
     {
@@ -214,6 +232,16 @@ export const siteConfig = {
       theme: "blue",
     },
   ],
+
+  // --- CTA Final (conversión WhatsApp) ---
+  finalCta: {
+    eyebrow: "¿Listo para empezar?",
+    title: "Hagamos realidad tu proyecto",
+    text: "Cuéntanos tu idea y recibe una cotización personalizada en menos de 24 horas.",
+    cta: "Cotizar por WhatsApp",
+    url: "https://wa.me/51977938339?text=Hola%2C%20quiero%20cotizar%20un%20proyecto"
+  },
+
 };
 
 // Helper para generar URL de WhatsApp

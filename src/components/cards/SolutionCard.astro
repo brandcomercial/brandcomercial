@@ -75,7 +75,7 @@ const Icon = iconMap[solution.icon] || Wrench;
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(10, 25, 47, 0.08);
-    border: 1px solid rgba(10, 25, 47, 0.08);
+    border: 2px solid rgba(10, 25, 47, 1);
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     color: inherit;
     position: relative;
@@ -84,7 +84,8 @@ const Icon = iconMap[solution.icon] || Wrench;
   .solution-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 12px 35px rgba(10, 25, 47, 0.15);
-    border-color: rgba(255, 107, 53, 0.3);
+    border-color: var(--color-secondary);
+
   }
 
   /* Imagen vertical con zoom */
@@ -169,7 +170,7 @@ const Icon = iconMap[solution.icon] || Wrench;
     bottom: 0;
     left: 0;
     width: 0;
-    height: 3px;
+    height: 4px;
     background-color: var(--color-secondary);
     transition: width 0.4s ease;
   }
