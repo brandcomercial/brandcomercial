@@ -1,0 +1,252 @@
+---
+/**
+ * Brands.astro — Carrusel infinito de logos (confianza social)
+ * ============================================
+ * - Marquee 100% CSS (sin JS): mejor rendimiento
+ * - Grupo duplicado con aria-hidden para loop sin saltos
+ * - Logos grayscale → color al hover
+ * - Fades en los bordes para elegancia
+ * - Respeta prefers-reduced-motion (accesibilidad)
+ * ============================================
+ */
+import { siteConfig } from '../../config/site';
+
+const brands = siteConfig.brands;
+---
+
+<section class="brands" aria-label="Marcas que confían en nosotros">
+  <div class="brands__container">
+    <header class="brands__header" data-animate>
+      <p class="brands__eyebrow">Confianza</p>
+      <h2 class="brands__title">Marcas que nos eligen</h2>
+      <div class="brands__bar">
+        <span class="brands__bar-dot"></span>
+      </div>
+    </header>
+
+    <div class="brands__marquee" data-animate data-delay="150">
+      <div class="brands__track">
+        <!-- Grupo original -->
+        <div class="brands__group">
+          {brands.map((brand) => (
+            <div class="brands__logo" title={brand.name}>
+              {brand.image ? (
+                <img src={brand.image} alt={brand.name} loading="lazy" />
+              ) : (
+                <span class="brands__logo-text">{brand.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+        <!-- Grupo duplicado (aria-hidden: no se lee dos veces) -->
+        <div class="brands__group" aria-hidden="true">
+          {brands.map((brand) => (
+            <div class="brands__logo">
+              {brand.image ? (
+                <img src={brand.image} alt="" loading="lazy" />
+              ) : (
+                <span class="brands__logo-text">{brand.name}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <span class="brands__fade brands__fade--left"></span>
+      <span class="brands__fade brands__fade--right"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     BRANDS.CSS — Marquee infinito
+     ============================================ */
+
+  .brands {
+    --logo-h: 36px;
+    --logo-gap: 2rem;
+    padding: 2rem 0 4rem;
+    background-color: var(--color-bg);
+  }
+
+  @media (min-width: 768px) {
+    .brands { --logo-h: 44px; --logo-gap: 3rem; }
+  }
+
+  @media (min-width: 1280px) {
+    .brands { --logo-h: 56px; --logo-gap: 4rem; }
+  }
+
+  .brands__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  /* Encabezado (consistente con Solutions) */
+  .brands__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .brands__eyebrow {
+    font-family: var(--font-heading);
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.95rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .brands__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.1rem + 2vw, 2.6rem);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .brands__bar {
+    position: relative;
+    width: 120px;
+    height: 5px;
+    margin: 0 auto;
+    background-color: var(--color-secondary);
+    border-radius: 4px;
+  }
+
+  .brands__bar-dot {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: barSlide 6s ease-in-out infinite;
+  }
+
+  @keyframes barSlide {
+    0%, 100% { left: 0; }
+    50% { left: 100%; }
+  }
+
+  /* --- Marquee --- */
+  .brands__marquee {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .brands__track {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+
+  .brands__marquee:hover .brands__track {
+    animation-play-state: paused; /* Pausa al hover */
+  }
+
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+
+  .brands__group {
+    display: flex;
+    align-items: center;
+    gap: var(--logo-gap);
+    padding-right: var(--logo-gap); /* = gap, para loop sin saltos */
+  }
+
+  .brands__logo {
+    height: var(--logo-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brands__logo img {
+    max-height: 100%;
+    width: auto;
+    filter: grayscale(1);
+    opacity: 0.55;
+    transition: filter 0.4s ease, opacity 0.4s ease;
+  }
+
+  .brands__logo:hover img {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+
+  /* Logo de texto (mientras no haya imágenes reales) */
+  .brands__logo-text {
+    font-family: var(--font-display);
+    font-size: calc(var(--logo-h) * 0.55);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    opacity: 0.5;
+    white-space: nowrap;
+    transition: opacity 0.4s ease, color 0.4s ease;
+  }
+
+  .brands__logo:hover .brands__logo-text {
+    opacity: 1;
+    color: var(--color-secondary);
+  }
+
+  /* Fades en los bordes */
+  .brands__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .brands__fade--left {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  .brands__fade--right {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg), transparent);
+  }
+
+  /* Accesibilidad: sin animación si el usuario prefiere movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    .brands__track {
+      animation: none;
+    }
+
+    .brands__marquee {
+      overflow-x: auto;
+    }
+  }
+
+  /* Animación al scroll */
+  .brands__header[data-animate],
+  .brands__marquee[data-animate] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .brands__header[data-animate].is-visible,
+  .brands__marquee[data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from '../../utils/scrollReveal';
+  document.addEventListener('DOMContentLoaded', () => initScrollReveal());
+</script>

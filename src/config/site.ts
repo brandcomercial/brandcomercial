@@ -242,6 +242,15 @@ export const siteConfig = {
     url: "https://wa.me/51977938339?text=Hola%2C%20quiero%20cotizar%20un%20proyecto"
   },
 
+  brands: [
+    {name: "Nissan", image: ""},
+    {name: "Innco", image: ""},
+    {name: "Metaboo", image: ""},
+    {name: "DeWalt", image: ""},
+    {name: "Bosch", image: ""},
+    {name: "Standley", image: ""},
+  ]
+
 };
 
 // Helper para generar URL de WhatsApp
