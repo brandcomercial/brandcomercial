@@ -365,3 +365,44 @@ Edita las variables en `CatalogShowcase.astro`:
 
 ```css
 .catalog { --slider-h: 240px; --card-h: 170px; }
+
+---
+
+## 👥 AboutHome + SocialOrbit
+
+### AboutHome (Home, después de Benefits)
+
+- Sección de alto completo (`min-height: 100svh`).
+- Coreografía secuencial calculada en build time (los delays se ajustan solos si editas el texto en `site.ts`):
+  - **Desktop:** eyebrow → title+image → órbita (fade) → text → stats → cta
+  - **Móvil:** eyebrow → title → text → stats → cta → image → órbita
+- Texto y stats animados **palabra por palabra** (stagger 0.04s).
+- Botón brochure con descarga directa (atributo `download`, archivo same-origin en `public/`).
+
+### SocialOrbit (`src/components/ui/SocialOrbit.astro` — reutilizable)
+
+- Anillo que rota 360° infinito (20s); los iconos **contra-rotan** para verse siempre derechos.
+- Se pausa al hover en cualquier parte del componente.
+- Cada logo es un link a la red social (nueva pestaña, `rel="noopener"`).
+- Redes configuradas en `site.ts → socials`.
+
+---
+
+## 🔢 Guía de commits y versiones
+
+### Tipos de commit (Conventional Commits)
+
+| Tipo | Se usa cuando... | Ejemplo del proyecto |
+|---|---|---|
+| `feat` | Creas una funcionalidad nueva | `feat: CatalogShowcase...` |
+| `fix` | Corriges un bug | `fix: alineación de stats` |
+| `refactor` | Reestructuras sin cambiar lo visible | `refactor: Carousel genérico` |
+| `docs` | Solo documentación | `docs: README` |
+
+### Tags de versión (vMAJOR.MINOR.PATCH)
+
+| Parte | Cuándo sube | Ejemplo |
+|---|---|---|
+| **MAJOR** (1.0.0) | Sitio completo en producción | Aún no |
+| **MINOR** (v0.X.0) | Cada sección/funcionalidad completa | v0.8.0 → v0.9.0 |
+| **PATCH** (v0.9.1) | Arreglos pequeños sin funcionalidad nueva | Si corriges un bug puntual |
