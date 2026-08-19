@@ -1,0 +1,365 @@
+---
+/**
+ * AboutHome.astro — v3 (alineado + coreografía por breakpoint)
+ * ============================================
+ * - Todo alineado a la izquierda (labels de stats en línea)
+ * - Desktop (≥961px): eyebrow → title+image → orbit(fade) → text → stats → cta
+ * - Móvil (<961px): eyebrow → title → text → stats → cta → image → orbit(fade)
+ * - Delays calculados en build time para ambos órdenes (--d-* / --m-*)
+ * - Botón brochure: md en tablet/móvil, lg en desktop
+ * ============================================
+ */
+import { siteConfig } from '../../config/site';
+import SocialOrbit from '../ui/SocialOrbit.astro';
+
+const { eyebrow, title, text, stats, ctaBrochure, image } = siteConfig.aboutHome;
+
+// --- Cálculo de delays para AMBOS órdenes ---
+const WORD = 0.04;
+const textWords = text.split(' ').filter(Boolean);
+const statsTokens = stats.reduce(
+  (acc, s) => acc + 1 + s.label.split(' ').filter(Boolean).length,
+  0
+);
+
+// Móvil: eyebrow → title → text → stats → cta → image → orbit
+const mEyebrow = 0.1;
+const mTitle = 0.5;
+const mText = 1.0;
+const mStats = mText + textWords.length * WORD + 0.4;
+const mCta = mStats + statsTokens * WORD + 0.4;
+const mImage = mCta + 0.5;
+const mOrbit = mImage + 0.6;
+
+// Desktop: eyebrow → title+image → orbit → text → stats → cta
+const dEyebrow = 0.1;
+const dTitle = 0.5;
+const dImage = 0.5;
+const dOrbit = 1.2;
+const dText = 1.1;
+const dStats = dText + textWords.length * WORD + 0.4;
+const dCta = dStats + statsTokens * WORD + 0.4;
+---
+
+<section class="about-home" aria-label="Acerca de nosotros">
+  <div 
+    class="about-home__container" 
+    data-animate
+    style={`--m-eyebrow: ${mEyebrow}s; --m-title: ${mTitle}s; --m-text: ${mText}s; --m-stats: ${mStats}s; --m-cta: ${mCta}s; --m-image: ${mImage}s; --m-orbit: ${mOrbit}s; --d-eyebrow: ${dEyebrow}s; --d-title: ${dTitle}s; --d-image: ${dImage}s; --d-orbit: ${dOrbit}s; --d-text: ${dText}s; --d-stats: ${dStats}s; --d-cta: ${dCta}s;`}
+  >
+    <!-- Columna izquierda: contenido -->
+    <div class="about-home__content">
+      <p class="about-home__eyebrow anim anim--left">{eyebrow}</p>
+
+      <h2 class="about-home__title anim anim--up">{title}</h2>
+
+      <p class="about-home__text anim-words anim--right">
+        {textWords.map((w, i) => (
+          <span class="word" style={`--w: ${i}`}>{w}&nbsp;</span>
+        ))}
+      </p>
+
+            <div class="about-home__stats">
+        {stats.map((stat, si) => {
+          const labelWords = stat.label.split(' ').filter(Boolean);
+          const baseIndex = stats
+            .slice(0, si)
+            .reduce((acc, s) => acc + 1 + s.label.split(' ').filter(Boolean).length, 0);
+          return (
+            <div class="about-home__stat anim-words anim--left">
+              <span class="stat-value word" style={`--w: ${baseIndex}`}>{stat.value}</span>
+              <span class="stat-label">
+                {labelWords.map((w, wi) => (
+                  <span class="word word--label" style={`--w: ${baseIndex + 1 + wi}`}>
+                    {w}&nbsp;
+                  </span>
+                ))}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div class="about-home__actions">
+        <a href={ctaBrochure.url} download class="about-home__brochure anim anim--left">
+          {ctaBrochure.text}
+        </a>
+      </div>
+    </div>
+
+    <!-- Columna derecha: imagen + órbita -->
+    <div class="about-home__visual">
+      <img 
+        src={image} 
+        alt="Equipo Brandcomercial" 
+        loading="lazy" 
+        class="about-home__img anim anim--up"
+      />
+      <div class="about-home__orbit">
+        <SocialOrbit />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     ABOUT-HOME.CSS v3 — Alineado + coreografía dual
+     ============================================ */
+
+  .about-home {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+    background-color: var(--color-bg);
+  }
+
+  .about-home__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 961px) {
+    .about-home__container {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  /* --- TODO alineado a la izquierda --- */
+  .about-home__content {
+    text-align: left;
+    color: var(--color-text);
+  }
+
+  /* --- Delays por breakpoint (variables del contenedor) --- */
+  .about-home__eyebrow { --start: var(--m-eyebrow); }
+  .about-home__title { --start: var(--m-title); }
+  .about-home__text { --start: var(--m-text); }
+  .about-home__stat { --start: var(--m-stats); }
+  .about-home__brochure { --start: var(--m-cta); }
+  .about-home__img { --start: var(--m-image); }
+  .about-home__orbit { --start: var(--m-orbit); }
+
+  @media (min-width: 961px) {
+    .about-home__eyebrow { --start: var(--d-eyebrow); }
+    .about-home__title { --start: var(--d-title); }
+    .about-home__text { --start: var(--d-text); }
+    .about-home__stat { --start: var(--d-stats); }
+    .about-home__brochure { --start: var(--d-cta); }
+    .about-home__img { --start: var(--d-image); }
+    .about-home__orbit { --start: var(--d-orbit); }
+  }
+
+  /* --- Estado inicial --- */
+  .anim,
+  .anim-words .word {
+    opacity: 0;
+  }
+
+  .anim--left { transform: translateX(-40px); }
+  .anim--up { transform: translateY(40px); }
+  .anim-words .word { display: inline-block; transform: translateX(40px); }
+  .anim-words.anim--left .word { transform: translateX(-40px); }
+
+  .about-home__orbit { opacity: 0; }
+
+  /* --- Animaciones al activarse --- */
+  .about-home__container.is-visible .anim {
+    animation: reveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: var(--start);
+  }
+
+  .about-home__container.is-visible .anim-words .word {
+    animation: revealWord 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--start) + var(--w) * 0.04s);
+  }
+
+  /* Órbita: solo aparecer (fade) */
+  .about-home__container.is-visible .about-home__orbit {
+    animation: fadeIn 0.4s ease forwards;
+    animation-delay: var(--start);
+  }
+
+  @keyframes reveal {
+    to { opacity: 1; transform: translate(0, 0); }
+  }
+
+  @keyframes revealWord {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* --- Estilos de contenido --- */
+  .about-home__eyebrow {
+    font-family: var(--font-heading);
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.95rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .about-home__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 1.3rem + 2.5vw, 3rem);
+    line-height: 1.15;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .about-home__text {
+    font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1.05rem);
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    max-width: 500px;
+    text-align: left;
+  }
+
+  /* Stats: valor arriba, label en línea debajo */
+    /* Stats: contenedor alinea por la base (flex-end) */
+  .about-home__stats {
+    display: flex;
+    align-items: flex-end; /* ← todos los stats comparten la misma línea base */
+    gap: 2.5rem;
+    margin-left: 2.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .about-home__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  /* Valor grande: nowrap evita que "+12" se rompa */
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Label en línea debajo del valor */
+  .stat-label {
+    font-family: var(--font-heading);
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.95rem);
+    font-weight: 600;
+    color: var(--color-text);
+    opacity: 0.8;
+  }
+
+  .word--label {
+    /* hereda estilo de .stat-label vía el padre; solo necesita inline-block */
+    display: inline-block;
+  }
+
+  .word--value {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1;
+  }
+
+  .about-home__stat-label {
+    display: block;
+    text-align: left;
+  }
+
+  .word--label {
+    font-family: var(--font-heading);
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.95rem);
+    font-weight: 600;
+    color: var(--color-text);
+    opacity: 0.8;
+  }
+
+  /* Botón brochure: md en móvil/tablet, lg en desktop */
+  .about-home__brochure {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.0rem;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--color-primary);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  @media (min-width: 961px) {
+    .about-home__brochure {
+      padding: 0.85rem 1.75rem;
+      font-size: 0.95rem;
+    }
+  }
+
+  .about-home__brochure:hover {
+    background-color: #12386e;/* color boton :hover*/
+    transform: translateY(-2px);
+  }
+
+  /* Visual derecho */
+  .about-home__visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .about-home__img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 20px 50px rgba(10, 25, 47, 0.15);
+  }
+
+  .about-home__orbit {
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+  }
+
+  @media (max-width: 960px) {
+    .about-home__orbit {
+      bottom: -30px;
+      right: -5px;
+      left: auto;
+    }
+  }
+
+  /* Accesibilidad */
+  @media (prefers-reduced-motion: reduce) {
+    .anim,
+    .anim-words .word,
+    .about-home__orbit {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from '../../utils/scrollReveal';
+  document.addEventListener('DOMContentLoaded', () => initScrollReveal());
+</script>

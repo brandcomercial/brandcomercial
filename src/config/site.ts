@@ -249,7 +249,28 @@ export const siteConfig = {
     {name: "DeWalt", image: ""},
     {name: "Bosch", image: ""},
     {name: "Standley", image: ""},
-  ]
+  ],
+
+    // --- Acerca de nosotros (Home) ---
+  aboutHome: {
+    eyebrow: "Sobre nosotros",
+    title: "Expertos que hacen destacar tu marca",
+    text: "Somos un equipo especializado en soluciones gráficas, impresión de gran formato e instalación profesional. Transformamos ideas en experiencias visuales memorables.",
+    stats: [
+      { value: "+12", label: "Años de experiencia" },
+      { value: "+100", label: "Proyectos realizados" }
+    ],
+    ctaBrochure: { text: "Descargar brochure", url: "/brochure BC 2026.pdf" },
+    image: "/grupo de trabajo.png"
+  },
+
+  // --- Redes sociales (SocialOrbit) ---
+  socials: [
+    { name: "YouTube", url: "https://youtube.com/@brandcomercial", icon: "youtube" },
+    { name: "TikTok", url: "https://tiktok.com/@brandcomercial", icon: "tiktok" },
+    { name: "Facebook", url: "https://facebook.com/brandcomercial", icon: "facebook" },
+    { name: "Instagram", url: "https://instagram.com/brand_comercial", icon: "instagram" }
+  ],
 
 };
 
