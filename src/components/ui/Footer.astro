@@ -1,8 +1,14 @@
 ---
-import { siteConfig, getWhatsAppUrl } from '../../config/site';
-import { Phone, Mail, Navigation } from 'lucide-astro';
-import { siFacebook, siInstagram, siTiktok, siYoutube, siWhatsapp } from 'simple-icons';
-import logoWhiteUrl from '../../assets/logo-brandcomercial-white.svg?url';
+import { siteConfig, getWhatsAppUrl } from "../../config/site";
+import { Phone, Mail, Navigation } from "lucide-astro";
+import {
+  siFacebook,
+  siInstagram,
+  siTiktok,
+  siYoutube,
+  siWhatsapp,
+} from "simple-icons";
+import logoWhiteUrl from "../../assets/logo-brandcomercial-white.svg?url";
 
 const currentYear = new Date().getFullYear();
 
@@ -11,14 +17,14 @@ const socialIconMap: Record<string, string> = {
   tiktok: siTiktok.path,
   youtube: siYoutube.path,
   facebook: siFacebook.path,
-  instagram: siInstagram.path
+  instagram: siInstagram.path,
 };
 
 // Convertir objeto social → array con íconos SVG
 const socialLinks = Object.entries(siteConfig.social).map(([key, href]) => ({
   label: key.charAt(0).toUpperCase() + key.slice(1),
   href,
-  iconPath: socialIconMap[key] || siFacebook.path
+  iconPath: socialIconMap[key] || siFacebook.path,
 }));
 
 // Datos directos desde config
@@ -32,48 +38,64 @@ const whatsappIconPath = siWhatsapp.path;
 <footer class="site-footer">
   <div class="footer__container">
     <div class="footer__grid">
-      
       <!-- Columna 1: Marca -->
       <div class="footer__brand">
-        
-<a href="/" class="footer__logo" aria-label="Brandcomercial Spotz - Inicio">
-  <img 
-    src={logoWhiteUrl} 
-    alt="Brandcomercial Spotz" 
-    class="logo__img"
-    width="180"
-    height="40"
-  />
-</a>
+        <a
+          href="/"
+          class="footer__logo"
+          aria-label="Brandcomercial Spotz - Inicio"
+        >
+          <img
+            src={logoWhiteUrl}
+            alt="Brandcomercial Spotz"
+            class="logo__img"
+            width="180"
+            height="40"
+          />
+        </a>
 
+        <p class="footer__tagline">
+          Conectando marcas con soluciones gráficas profesionales.
+        </p>
 
-        <p class="footer__tagline">Conectando marcas con soluciones gráficas profesionales.</p>
-        
         <!-- Redes sociales -->
         <div class="footer__social" aria-label="Redes sociales">
-  {socialLinks.map((social) => (
-    <a 
-      href={social.href} 
-      target="_blank" 
-      rel="noopener noreferrer"
-      class="social__link"
-      aria-label={social.label}
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d={social.iconPath} />
-      </svg>
-    </a>
-  ))}
-</div>
+          {
+            socialLinks.map((social) => (
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social__link"
+                aria-label={social.label}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d={social.iconPath} />
+                </svg>
+              </a>
+            ))
+          }
+        </div>
       </div>
 
       <!-- Columna 2: Empresa -->
       <nav class="footer__nav" aria-label="Empresa">
         <h3 class="footer__heading">Empresa</h3>
         <ul class="footer__links">
-          {companyLinks.map((link) => (
-            <li><a href={link.href} class="footer__link">{link.label}</a></li>
-          ))}
+          {
+            companyLinks.map((link) => (
+              <li>
+                <a href={link.href} class="footer__link">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </nav>
 
@@ -81,9 +103,15 @@ const whatsappIconPath = siWhatsapp.path;
       <nav class="footer__nav" aria-label="Ayuda">
         <h3 class="footer__heading">Ayuda</h3>
         <ul class="footer__links">
-          {helpLinks.map((link) => (
-            <li><a href={link.href} class="footer__link">{link.label}</a></li>
-          ))}
+          {
+            helpLinks.map((link) => (
+              <li>
+                <a href={link.href} class="footer__link">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </nav>
 
@@ -93,37 +121,42 @@ const whatsappIconPath = siWhatsapp.path;
         <ul class="footer__contact-list">
           <li>
             <Phone size={18} class="contact__icon" />
-            <a href={contactInfo.phoneLink} class="footer__link">{contactInfo.phone}</a>
+            <a href={contactInfo.phoneLink} class="footer__link"
+              >{contactInfo.phone}</a
+            >
           </li>
           <li>
             <Mail size={18} class="contact__icon" />
-            <a href={contactInfo.emailLink} class="footer__link">{contactInfo.email}</a>
+            <a href={contactInfo.emailLink} class="footer__link"
+              >{contactInfo.email}</a
+            >
           </li>
           <li>
             <Navigation size={18} class="contact__icon" />
             <span class="footer__link">{contactInfo.address}</span>
           </li>
         </ul>
-        
-        <!-- Botón WhatsApp -->
-    <a 
-  href={whatsappUrl}
-  target="_blank"
-  rel="noopener noreferrer"
-  class="footer__whatsapp"
->
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-    <path d={whatsappIconPath} />
-  </svg>
-  Cotize en vivo
-</a>
-      </div>
 
+        <!-- Botón WhatsApp -->
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer__whatsapp"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d={whatsappIconPath}></path>
+          </svg>
+          Cotize en vivo
+        </a>
+      </div>
     </div>
 
     <!-- Copyright -->
     <div class="footer__bottom">
-      <p>© {currentYear} Brandcomercial Spotz. Todos los derechos reservados.</p>
+      <p>
+        © {currentYear} Brandcomercial Spotz. Todos los derechos reservados.
+      </p>
     </div>
   </div>
 </footer>
@@ -149,11 +182,11 @@ const whatsappIconPath = siWhatsapp.path;
     gap: 2.5rem;
   }
 
-@media (max-width: 768px) {
-  .footer__logo .logo__img {
-    height: 32px;
+  @media (max-width: 768px) {
+    .footer__logo .logo__img {
+      height: 32px;
+    }
   }
-}
 
   @media (min-width: 768px) {
     .footer__grid {
@@ -185,9 +218,9 @@ const whatsappIconPath = siWhatsapp.path;
   }
 
   .footer__logo .logo__img {
-  height: 40px;
-  width: auto;
-}
+    height: 40px;
+    width: auto;
+  }
 
   .logo__accent {
     color: var(--color-secondary);
@@ -215,7 +248,9 @@ const whatsappIconPath = siWhatsapp.path;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition:
+      background-color 0.3s ease,
+      transform 0.2s ease;
   }
 
   .social__link:hover {
@@ -277,13 +312,15 @@ const whatsappIconPath = siWhatsapp.path;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background-color: #25D366;
+    background-color: #25d366;
     color: #fff;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-family: var(--font-heading);
     font-weight: 600;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 
   .footer__whatsapp:hover {
