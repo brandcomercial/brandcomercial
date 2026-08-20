@@ -406,3 +406,31 @@ Edita las variables en `CatalogShowcase.astro`:
 | **MAJOR** (1.0.0) | Sitio completo en producción | Aún no |
 | **MINOR** (v0.X.0) | Cada sección/funcionalidad completa | v0.8.0 → v0.9.0 |
 | **PATCH** (v0.9.1) | Arreglos pequeños sin funcionalidad nueva | Si corriges un bug puntual |
+
+
+--------------------------------
+## 📏 Sistema de breakpoints oficiales
+
+| Rango | Dispositivo | Uso típico |
+|---|---|---|
+| <480px | Móvil pequeño | Contenido apilado, tipografía reducida |
+| 480-767px | Móvil grande | Cards lado a lado si aplica |
+| 768-960px | Tablet | Layouts híbridos |
+| 961-1279px | Laptop pequeña | Layout desktop compacto |
+| 1280-1439px | Desktop | Layout completo |
+| ≥1440px | Desktop grande | Máxima escala |
+
+### Reglas de oro (responsive seguro)
+
+1. **Alturas determinísticas:** usar variables CSS por breakpoint (`--slider-h`, `--card-h`, `--cta-h`).
+2. **Proporción garantizada:** en layouts de fila, `2 × card + gap = slider`.
+3. **Imágenes controladas:** `max-width: 100%` + `max-height: 100%` + `object-fit: contain` + `overflow: hidden` en el contenedor.
+4. **Tipografía fluida:** `clamp(mín, preferido, máx)`.
+5. **Nunca valores fijos sin límite:** evitar `width: 300px` puro; usar `min(100%, 300px)`.
+6. **Grid para layouts 2D, Flex para alineación 1D.**
+7. **Accesibilidad:** respetar `prefers-reduced-motion` en toda animación.
+
+### Estructura de imágenes (regla permanente)
+
+Toda imagen nueva va a `public/<sección>/<nombre-descriptivo>.ext`:
+-------------------------------------
