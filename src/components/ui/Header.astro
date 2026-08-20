@@ -1,6 +1,6 @@
 ---
 // Importar configuración central e íconos
-import { siteConfig, getWhatsAppUrl } from "../config/site";
+import { siteConfig, getWhatsAppUrl } from "../../config/site";
 import {
   Home,
   Users,
@@ -12,8 +12,8 @@ import {
   Menu,
   MessageCircle,
 } from "lucide-astro";
-import logoUrl from "../assets/logo-brandcomercial.svg?url";
-import logoWhiteUrl from "../assets/logo-brandcomercial-white.svg?url";
+import logoUrl from "../../assets/logo-brandcomercial.svg?url";
+import logoWhiteUrl from "../../assets/logo-brandcomercial-white.svg?url";
 
 // Mapa: convierte nombres de ícono (texto en config) → componentes Lucide
 const iconMap: Record<string, any> = {

@@ -1,0 +1,127 @@
+---
+/**
+ * Story.astro — Historia + contadores animados
+ */
+import { siteConfig } from '../../config/site';
+
+const { historia, counters } = siteConfig.nosotros;
+---
+
+<section class="story" aria-label="Nuestra historia">
+  <div class="story__container">
+    <div class="story__media" data-animate>
+      <img src={historia.image} alt={historia.title} loading="lazy" />
+    </div>
+
+    <div class="story__content" data-animate data-delay="150">
+      <p class="story__eyebrow">Quiénes somos</p>
+      <h2 class="story__title">{historia.title}</h2>
+      <p class="story__text">{historia.text}</p>
+
+      <div class="story__counters">
+        {counters.map((c) => (
+          <div class="story__counter">
+            <span class="story__counter-value">
+              <span data-count={c.value}>0</span>{c.suffix}
+            </span>
+            <span class="story__counter-label">{c.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    padding: 4rem 0;
+    background-color: var(--color-bg);
+  }
+
+  .story__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 961px) {
+    .story__container {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .story__media img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 20px 50px rgba(10, 25, 47, 0.15);
+  }
+
+  .story__eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .story__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.6rem);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .story__text {
+    font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1.05rem);
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+  }
+
+  .story__counters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .story__counter-value {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.6rem + 1.5vw, 3rem);
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1;
+  }
+
+  .story__counter-label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin-top: 0.25rem;
+  }
+
+  /* Animaciones al scroll */
+  .story__media[data-animate],
+  .story__content[data-animate] {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .story__media[data-animate].is-visible,
+  .story__content[data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>

@@ -1,0 +1,173 @@
+---
+/**
+ * Timeline.astro — Hitos de la empresa (línea vertical alternada)
+ */
+import { siteConfig } from '../../config/site';
+
+const milestones = siteConfig.nosotros.timeline;
+---
+
+<section class="timeline-section" aria-label="Nuestra trayectoria">
+  <div class="timeline-section__container">
+    <header class="timeline-section__header" data-animate>
+      <p class="timeline-section__eyebrow">Trayectoria</p>
+      <h2 class="timeline-section__title">Nuestro camino</h2>
+    </header>
+
+    <div class="timeline">
+      {milestones.map((m, i) => (
+        <div 
+          class="timeline__item" 
+          data-animate={i % 2 === 0 ? 'left' : 'right'}
+        >
+          <span class="timeline__dot"></span>
+          <span class="timeline__year">{m.year}</span>
+          <h3 class="timeline__title">{m.title}</h3>
+          <p class="timeline__text">{m.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline-section {
+    padding: 2rem 0 5rem;
+    background-color: var(--color-bg);
+  }
+
+  .timeline-section__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+  .timeline-section__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .timeline-section__eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.6rem);
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  /* Línea vertical */
+  .timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 8px;
+    width: 2px;
+    background-color: rgba(10, 25, 47, 0.15);
+  }
+
+  @media (min-width: 961px) {
+    .timeline::before {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .timeline__item {
+    position: relative;
+    padding: 0 0 3rem 2.5rem;
+  }
+
+  @media (min-width: 961px) {
+    .timeline__item {
+      width: 50%;
+      padding: 0 3rem 3.5rem 0;
+      text-align: right;
+    }
+
+    .timeline__item:nth-child(even) {
+      margin-left: 50%;
+      padding: 0 0 3.5rem 3rem;
+      text-align: left;
+    }
+  }
+
+  .timeline__dot {
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.2);
+  }
+
+  @media (min-width: 961px) {
+    .timeline__dot {
+      left: auto;
+      right: -7px;
+    }
+
+    .timeline__item:nth-child(even) .timeline__dot {
+      right: auto;
+      left: -7px;
+    }
+  }
+
+  .timeline__year {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.25rem);
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline__text {
+    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.85;
+  }
+
+  /* Animaciones alternadas */
+  .timeline__item[data-animate] {
+    opacity: 0;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .timeline__item[data-animate='left'] { transform: translateX(-40px); }
+  .timeline__item[data-animate='right'] { transform: translateX(40px); }
+
+  .timeline__item[data-animate].is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+</style>

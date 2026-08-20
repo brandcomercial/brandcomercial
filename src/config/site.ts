@@ -2,11 +2,12 @@
  * CONFIGURACIÓN CENTRAL DEL SITIO
  * ============================================
  * Este archivo contiene TODOS los datos editables del sitio.
- * Para cambiar menú, contacto, redes sociales, etc., edita aquí.
+ * Para cambiar menú, contacto, redes sociales, etc.
  * Los componentes (Header, Footer) Los datos se importan automáticamente.
  * ============================================
  */
 
+import { Subtitles } from "lucide-astro";
 import Benefits from "../components/home/Benefits.astro";
 
 export const siteConfig = {
@@ -88,7 +89,7 @@ export const siteConfig = {
       cta: "Cotizar ahora",
       url: "/contacto",
       theme: "slide--print",
-      image: "/hero-print.png",
+      image: "/home/hero/hero-print.png",
     },
     {
       eyebrow: "Instalación profesional",
@@ -97,7 +98,7 @@ export const siteConfig = {
       cta: "Ver servicios",
       url: "/servicios",
       theme: "slide--install",
-      image: "/instalador.png",
+      image: "/home/hero/instalador.png",
     },
     {
       eyebrow: "Brandeo corporativo",
@@ -106,7 +107,7 @@ export const siteConfig = {
       cta: "Conocer más",
       url: "/productos",
       theme: "slide--brand",
-      image: "/hero-brand.png",
+      image: "/home/hero/hero-brand.png",
     },
   ],
 
@@ -146,7 +147,7 @@ export const siteConfig = {
       title: "Instalación profedional",
       text: "Viniles, lonas y señaleticas instalados con precisión y cuidado.",
       url: "/servicios",
-      image: "/instalador-banner-promo.png",
+      image: "/home/solutions/instalador-banner-promo.png",
     },
 
     {
@@ -154,7 +155,7 @@ export const siteConfig = {
       title: "Productos gráficos",
       text: "Gigantografias, lona, rollscreen y más para tu marca",
       url: "/productos",
-      image: "/hero-print.png",
+      image: "/home/solutions/hero-print.png",
     },
 
     {
@@ -162,7 +163,7 @@ export const siteConfig = {
       title: "Brandeo corporativo",
       text: "Transformamos espacios en experiencias de marca",
       url: "/proyectos",
-      image: "/hero-brand.png",
+      image: "/home/solutions/hero-brand.png",
     },
   ],
 
@@ -170,12 +171,12 @@ export const siteConfig = {
     {
       title: "Impresiones publicitarias para tu hogar o negocio",
       text: "Descubre cómo nuestras impresiones publicitarias pueden transformar tu hogar o negocio. <span class='promo-highlight'>Imprime tus ideas</span> en gran formato y a grandes escalas.",
-      image: "/hero-brand.png",
+      image: "/home/promos/hero-brand.png",
     },
     {
       title: "Decoración y brandeo publicitario",
       text: "Ofrecemos un servicio especializado en la instalación de viniles y lonas, garantizando <span class='promo-highlight'>calidad y durabilidad</span> en cada proyecto.",
-      image: "/instalador-banner-promo.png",
+      image: "/home/promos/instalador-banner-promo.png",
     },
   ],
 
@@ -186,7 +187,7 @@ export const siteConfig = {
       text: "Tu ruleta publicitaria a medida. Atrae miradas, interactúa con tu público y multiplica tus ventas.",
       cta: "Ver Catálogo",
       url: "/catalogo",
-      image: "/corporeo ruleta perspectiva.png",
+      image: "/home/catalog/corporeo ruleta perspectiva.png",
     },
     
     {
@@ -194,7 +195,7 @@ export const siteConfig = {
       text: "Tamaño Personalizado con diseños ajustados a tus necesidades y espacio de foto.",
       cta: "Ver catálogo",
       url: "/catalogo",
-      image: "/selfie2.png",
+      image: "/home/catalog/selfie2.png",
     },
 
     {
@@ -202,7 +203,7 @@ export const siteConfig = {
       text: "Dale personalidad a tus empaques con vinil adhesivo full color y cortes precisos según la silueta de tu marca.",
       cta: "Ver Catálogo",
       url: "/catalogo",
-      image: "/sticker-troqueado.png",
+      image: "/home/catalog/sticker-troqueado.png",
     },
 
     {
@@ -210,7 +211,7 @@ export const siteConfig = {
       text: "Tu publicidad exterior en el lugar correcto. Parante resistente y fácil de mover, perfecto para exhibir tus promociones.",
       cta: "Ver Catálogo",
       url: "/catalogo",
-      image: "/caballete madera.png",
+      image: "/home/catalog/caballete madera.png",
     },
 
   ],
@@ -220,7 +221,7 @@ export const siteConfig = {
       text: "Estructura de aluminio y sistema enrollable. Para lugares estratégicos.",
       cta: "Ver más",
       url: "/productos",
-      image: "/rollscreen.png",
+      image: "/home/catalog/rollscreen.png",
       theme: "orange",
     },
     {
@@ -228,7 +229,7 @@ export const siteConfig = {
       text: "Counters publicitarios de PVC: para activaciones, ferias y puntos de venta",
       cta: "Ver más",
       url: "/productos",
-      image: "/counter.png",
+      image: "/home/catalog/counter.png",
       theme: "blue",
     },
   ],
@@ -243,12 +244,12 @@ export const siteConfig = {
   },
 
   brands: [
-    {name: "Nissan", image: ""},
-    {name: "Innco", image: ""},
-    {name: "Metaboo", image: ""},
-    {name: "DeWalt", image: ""},
-    {name: "Bosch", image: ""},
-    {name: "Standley", image: ""},
+    {name: "Nissan", image: "/brands/McDonalds logo.webp"},
+    {name: "Innco", image: "/brands/mcdonalds-logo.jpg"},
+    {name: "Metaboo", image: "/brands/nike logo.jpg"},
+    {name: "DeWalt", image: "nissan logo.jpg"},
+    {name: "Bosch", image: "/brands/porsche logo"},
+    {name: "Standley", image: "/brands/nike logo.jpg"},
   ],
 
     // --- Acerca de nosotros (Home) ---
@@ -261,7 +262,7 @@ export const siteConfig = {
       { value: "+100", label: "Proyectos realizados" }
     ],
     ctaBrochure: { text: "Descargar brochure", url: "/brochure BC 2026.pdf" },
-    image: "/grupo de trabajo.png"
+    image: "/home/about/grupo de trabajo.png"
   },
 
   // --- Redes sociales (SocialOrbit) ---
@@ -271,6 +272,7 @@ export const siteConfig = {
     { name: "Facebook", url: "https://facebook.com/brandcomercial", icon: "facebook" },
     { name: "Instagram", url: "https://instagram.com/brand_comercial", icon: "instagram" }
   ],
+
 
 };
 
