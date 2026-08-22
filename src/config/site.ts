@@ -286,19 +286,19 @@ export const siteConfig = {
   },
 
     // --- Página Nosotros: Sección 1 (Intro) ---
-  nosotrosIntro: {
-    eyebrow: "Brandcomercial SAC · Conectando marcas",
-    title: "Destaca tu Negocio o Empresa con nuestros productos y servicios",
-    lead: "Soluciones gráficas integrales que transforman espacios en experiencias de marca",
+    nosotrosIntro: {
+    eyebrow: "| Brandcomercial Spotz |",
+    slogan: "Conectando marcas",
+    // Palabras entre ** se resaltan en naranja
+    title: "Destaca tu **Negocio** o **Empresa** con nuestros productos y servicios",
     text: "Somos un grupo de profesionales con más de 12 años de experiencia en la publicidad. Nos reunimos para ofrecerte un buen servicio en tus proyectos y trabajos personales, brindándote asesoramiento en todos nuestros productos y servicios publicitarios.",
     services: [
-      "Ofrecemos servicios y productos publicitarios:",
-      "Impresiones - Instalaciones - Parantes publicitarios",
-      "Sticker - Corpóreos - Backing - Señaléticas y otros"
+      "Ofrecemos servicios y productos publicitarios: impresiones de gran formato, instalaciones profesionales y parantes publicitarios.",
+      "Sticker, corpóreos, backing, señaléticas y muchos otros productos que hacen destacar tu marca."
     ],
     cta: { text: "Más información", url: "/servicios" },
-    image1: "/nosotros/intro/group-worker.jpg",
-    image2: "/nosotros/intro/grupo-trabajo.png"
+    image1: "/nosotros/hero/grupo-trabajo.png",
+    image2: "/nosotros/hero/grupo-trabajo.png",
   },
 
 };

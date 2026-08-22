@@ -1,35 +1,32 @@
 ---
 /**
- * Intro.astro — Nosotros: introducción a la empresa
+ * Intro.astro v2 — Nosotros: introducción a la empresa
  * ============================================
- * Coreografía: eyebrow(↓ palabra) → title(→ palabra) → lead(↓ palabra)
- * → barra(fade) → imágenes(↑ juntas) → texto(↑ línea) → servicios(↑ línea) → botón(→)
- * Delays calculados en build time.
+ * Collage superpuesto + slogan + hover servicios refinado
+ * Icono: círculo fijo + SVG rota 360° con difuminación
  */
 import { siteConfig } from '../../config/site';
 import Button from '../ui/Button.astro';
 import AnimatedBar from '../ui/AnimatedBar.astro';
 import { UserCog } from 'lucide-astro';
 
-const { eyebrow, title, lead, text, services, cta, image1, image2 } = siteConfig.nosotrosIntro;
+const { eyebrow, title, slogan, text, services, cta, image1, image2 } = siteConfig.nosotrosIntro;
 
-// --- Utilidades de split ---
 const words = (s: string) => s.split(' ').filter(Boolean);
 const lines = (s: string) => s.split(/(?<=[.!?…])\s+/).filter(Boolean);
 
 const eyebrowW = words(eyebrow);
 const titleW = words(title);
-const leadW = words(lead);
+const sloganW = words(slogan);
 const textL = lines(text);
 
-// --- Coreografía (segundos) ---
 const WORD = 0.04;
 const LINE = 0.15;
 
 const tEyebrow = 0.1;
 const tTitle = tEyebrow + eyebrowW.length * WORD + 0.3;
-const tLead = tTitle + titleW.length * WORD + 0.3;
-const tBar = tLead + leadW.length * WORD + 0.3;
+const tSlogan = tTitle + titleW.length * WORD + 0.3;
+const tBar = tSlogan + sloganW.length * WORD + 0.3;
 const tImages = tBar + 0.3;
 const tText = tBar + 0.5;
 const tServices = tText + textL.length * LINE + 0.3;
@@ -40,21 +37,29 @@ const tCta = tServices + services.length * LINE + 0.4;
   <div
     class="intro__container"
     data-animate
-    style={`--t-eyebrow: ${tEyebrow}s; --t-title: ${tTitle}s; --t-lead: ${tLead}s; --t-bar: ${tBar}s; --t-images: ${tImages}s; --t-text: ${tText}s; --t-services: ${tServices}s; --t-cta: ${tCta}s;`}
+    style={`--t-eyebrow: ${tEyebrow}s; --t-title: ${tTitle}s; --t-slogan: ${tSlogan}s; --t-bar: ${tBar}s; --t-images: ${tImages}s; --t-text: ${tText}s; --t-services: ${tServices}s; --t-cta: ${tCta}s;`}
   >
-    <!-- Columna 1: contenido -->
     <div class="intro__content">
       <p class="intro__eyebrow aw aw-down">
         {eyebrowW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
       </p>
 
-      <h1 class="intro__title aw aw-right">
-        {titleW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
-      </h1>
-
-      <p class="intro__lead aw aw-down">
-        {leadW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
+      <p class="intro__slogan aw aw-down">
+        {sloganW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
       </p>
+
+      <h2 class="intro__title aw aw-right">
+        {titleW.map((w, i) => {
+          const accent = w.startsWith('**') && w.endsWith('**');
+          const clean = accent ? w.slice(2, -2) : w;
+          return (
+            <span class={`w ${accent ? 'w--accent' : ''}`} style={`--w: ${i}`}>
+              {clean}&nbsp;
+            </span>
+          );
+        })}
+      </h2>
+
 
       <AnimatedBar start={tBar} />
 
@@ -64,7 +69,7 @@ const tCta = tServices + services.length * LINE + 0.4;
 
       <div class="intro__services">
         <span class="intro__services-icon fade">
-          <UserCog size={40} />
+          <UserCog size={28} />
         </span>
         <p class="al">
           {services.map((l, i) => <span class="l" style={`--l: ${i}`}>{l}</span>)}
@@ -76,25 +81,20 @@ const tCta = tServices + services.length * LINE + 0.4;
       </div>
     </div>
 
-    <!-- Columna 2: imágenes escalonadas -->
     <div class="intro__visual">
       <figure class="intro__fig intro__fig--1 rise">
         <img src={image1} alt="Equipo Brandcomercial en presentación" loading="lazy" />
       </figure>
       <figure class="intro__fig intro__fig--2 rise">
-        <img src={image2} alt="Equipo Brandcomercial trabajando" loading="lazy" />
+        <img src={image2} alt="Equipo Brandcomercial trabajando en proyecto" loading="lazy" />
       </figure>
     </div>
   </div>
 </section>
 
 <style>
-  /* ============================================
-     INTRO.CSS — Coreografía + grid responsive
-     ============================================ */
-
   .intro {
-    padding: 7rem 0 4rem; /* padding-top compensa el header fijo */
+    padding: 4rem 0;
     background-color: var(--color-bg);
   }
 
@@ -104,7 +104,7 @@ const tCta = tServices + services.length * LINE + 0.4;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 3rem;
     align-items: center;
   }
 
@@ -115,10 +115,9 @@ const tCta = tServices + services.length * LINE + 0.4;
     }
   }
 
-  /* --- Mapeo de delays por elemento --- */
   .intro__eyebrow { --start: var(--t-eyebrow); }
   .intro__title { --start: var(--t-title); }
-  .intro__lead { --start: var(--t-lead); }
+  .intro__slogan { --start: var(--t-slogan); }
   .intro__text { --start: var(--t-text); }
   .intro__services .al { --start: var(--t-services); }
   .intro__services-icon { --start: var(--t-services); }
@@ -126,7 +125,6 @@ const tCta = tServices + services.length * LINE + 0.4;
   .intro__fig--1 { --start: var(--t-images); }
   .intro__fig--2 { --start: calc(var(--t-images) + 0.25s); }
 
-  /* --- Estados iniciales --- */
   .aw .w,
   .al .l {
     opacity: 0;
@@ -144,7 +142,6 @@ const tCta = tServices + services.length * LINE + 0.4;
   .anim-left { transform: translateX(-40px); }
   .rise { transform: translateY(40px); }
 
-  /* --- Disparadores con .is-visible del contenedor --- */
   .intro__container.is-visible .aw .w {
     animation: appear 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: calc(var(--start) + var(--w) * 0.04s);
@@ -155,10 +152,15 @@ const tCta = tServices + services.length * LINE + 0.4;
     animation-delay: calc(var(--start) + var(--l) * 0.15s);
   }
 
-  .intro__container.is-visible .fade,
   .intro__container.is-visible .anim-left,
   .intro__container.is-visible .rise {
     animation: appear 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: var(--start);
+  }
+
+  /* Icono: entrada solo opacity (transform libre para el hover) */
+  .intro__container.is-visible .intro__services-icon {
+    animation: fadeOnly 0.7s ease forwards;
     animation-delay: var(--start);
   }
 
@@ -166,7 +168,10 @@ const tCta = tServices + services.length * LINE + 0.4;
     to { opacity: 1; transform: translate(0, 0); }
   }
 
-  /* --- Estilos de contenido --- */
+  @keyframes fadeOnly {
+    to { opacity: 1; }
+  }
+
   .intro__content {
     text-align: left;
   }
@@ -183,15 +188,22 @@ const tCta = tServices + services.length * LINE + 0.4;
   .intro__title {
     font-family: var(--font-display);
     font-size: clamp(1.8rem, 1.3rem + 2.5vw, 3rem);
-    line-height: 1.15;
+    line-height: 1.0;
     color: var(--color-primary);
     margin-bottom: 0.5rem;
   }
 
-  .intro__lead {
-    font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1.05rem);
-    color: var(--color-text);
-    opacity: 0.85;
+  .w--accent {
+    color: var(--color-secondary);
+  }
+
+  .intro__slogan {
+    font-family: var(--font-display);
+    font-size: clamp(0.8rem, 0.75rem + 0.3vw, 0.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.6em;
+    color: var(--color-primary);
+    margin-bottom: 0.6rem;
   }
 
   .intro__text {
@@ -202,17 +214,50 @@ const tCta = tServices + services.length * LINE + 0.4;
     margin-bottom: 1.5rem;
   }
 
-  /* Icono + texto */
+  /* --- Bloque servicios --- */
   .intro__services {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
     margin-bottom: 2rem;
+    cursor: default;
   }
 
+  /* Círculo: permanece FIJO, solo invierte colores */
   .intro__services-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: rgba(10, 25, 47, 0.08);
     color: var(--color-primary);
     flex-shrink: 0;
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+
+  /* SVG: libre para rotar con difuminación */
+  .intro__services-icon svg {
+    display: block;
+    transition: transform 0.5s ease, filter 0.6s ease;
+  }
+
+  .intro__services:hover .intro__services-icon {
+    background-color: var(--color-secondary);
+    color: #fff;
+  }
+
+  .intro__services:hover .intro__services-icon svg {
+    animation: iconSpin 0.9s cubic-bezier(0.4, 0.1, 0.2, 1);
+  }
+
+  @keyframes iconSpin {
+    0%   { transform: rotate(0deg);   filter: blur(0);   opacity: 1; }
+    50%  { transform: rotate(180deg); filter: blur(2px); opacity: 0.55; }
+    100% { transform: rotate(360deg); filter: blur(0);   opacity: 1; }
   }
 
   .intro__services .al {
@@ -220,44 +265,69 @@ const tCta = tServices + services.length * LINE + 0.4;
     line-height: 1.6;
     color: var(--color-text);
     opacity: 0.85;
+    flex: 1; 
   }
 
-  /* --- Imágenes escalonadas con zoom hover independiente --- */
+  /* --- Collage superpuesto --- */
   .intro__visual {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: start;
+    position: relative;
+    padding-bottom: 2.5rem;
   }
 
   .intro__fig {
     overflow: hidden;
     border-radius: 1rem;
-    aspect-ratio: 4 / 3;
     margin: 0;
     box-shadow: 0 15px 40px rgba(10, 25, 47, 0.15);
   }
 
-  .intro__fig--1 { grid-column: 2; }
-  .intro__fig--2 { grid-column: 1; margin-top: 4rem; }
+  .intro__fig--1 {
+    width: 82%;
+    margin-left: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .intro__fig--2 {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 55%;
+    aspect-ratio: 1 / 1;
+    z-index: 2;
+    box-shadow: 0 20px 50px rgba(10, 25, 47, 0.3);
+  }
 
   @media (max-width: 960px) {
-    .intro__fig--2 { margin-top: -2rem; }
+    .intro__fig--1 { width: 90%; }
+    .intro__fig--2 { width: 60%; }
   }
 
   .intro__fig img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
-  /* Zoom SOLO en la imagen con hover (independiente) */
   .intro__fig:hover img {
     transform: scale(1.06);
   }
 
-  /* --- Accesibilidad --- */
+  /* --- Botón azul noche --- */
+  .intro__cta :global(.btn.btn--primary) {
+    background-color: var(--color-primary);
+    color: #fff;
+    border: 2px solid var(--color-primary);
+    box-shadow: none;
+  }
+
+  .intro__cta :global(.btn.btn--primary:hover) {
+    background-color: #0d2547;
+    border-color: #0d2547;
+    transform: translateY(-2px);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .aw .w,
     .al .l,
@@ -267,6 +337,14 @@ const tCta = tServices + services.length * LINE + 0.4;
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
+    }
+
+    .intro__services:hover .intro__services-icon svg {
+      animation: none;
+    }
+
+    .intro__fig:hover img {
+      transform: none;
     }
   }
 </style>
