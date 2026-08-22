@@ -274,6 +274,33 @@ export const siteConfig = {
   ],
 
 
+    // --- PageHero: Nosotros (reutilizable en otras páginas) ---
+  nosotrosHero: {
+    eyebrow: "Bienvenido a Brandcomercial",
+    title: "Libertad e innovación para tu marca",
+    text: "Transformamos ideas en experiencias visuales impactantes con soluciones gráficas de gran formato, brandeo corporativo e instalación profesional.",
+    cta: { text: "Nuestra historia", url: "#intro" },
+    image: "/nosotros/hero/grupo-trabajo.png",
+    imageAlt: "Equipo Brandcomercial trabajando en proyecto de brandeo",
+    card: { value: "+12", label: "Años transformando marcas" }
+  },
+
+    // --- Página Nosotros: Sección 1 (Intro) ---
+  nosotrosIntro: {
+    eyebrow: "Brandcomercial SAC · Conectando marcas",
+    title: "Destaca tu Negocio o Empresa con nuestros productos y servicios",
+    lead: "Soluciones gráficas integrales que transforman espacios en experiencias de marca",
+    text: "Somos un grupo de profesionales con más de 12 años de experiencia en la publicidad. Nos reunimos para ofrecerte un buen servicio en tus proyectos y trabajos personales, brindándote asesoramiento en todos nuestros productos y servicios publicitarios.",
+    services: [
+      "Ofrecemos servicios y productos publicitarios:",
+      "Impresiones - Instalaciones - Parantes publicitarios",
+      "Sticker - Corpóreos - Backing - Señaléticas y otros"
+    ],
+    cta: { text: "Más información", url: "/servicios" },
+    image1: "/nosotros/intro/group-worker.jpg",
+    image2: "/nosotros/intro/grupo-trabajo.png"
+  },
+
 };
 
 // Helper para generar URL de WhatsApp

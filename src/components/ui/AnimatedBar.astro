@@ -1,0 +1,61 @@
+---
+/**
+ * AnimatedBar.astro — Barra con punto en movimiento (reutilizable)
+ * Uso: <AnimatedBar start={1.2} /> → aparece con delay de 1.2s
+ * El padre orquesta el delay; la barra hace fade-in con scrollReveal.
+ */
+interface Props {
+  start?: number;
+}
+
+const { start = 0 } = Astro.props;
+---
+
+<span class="animated-bar" data-animate style={`--start: ${start}s`} aria-hidden="true">
+  <span class="animated-bar__dot"></span>
+</span>
+
+<style>
+  .animated-bar {
+    position: relative;
+    display: block;
+    width: 120px;
+    height: 4px;
+    background-color: rgba(10, 25, 47, 0.15);
+    border-radius: 4px;
+    margin: 1.25rem 0;
+  }
+
+  .animated-bar__dot {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-secondary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: barSlide 4s ease-in-out infinite;
+  }
+
+  @keyframes barSlide {
+    0%, 100% { left: 0; }
+    50% { left: 100%; }
+  }
+
+  /* Fade-in orquestado por el padre (--start) */
+  .animated-bar[data-animate] {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    transition-delay: var(--start, 0s);
+  }
+
+  .animated-bar[data-animate].is-visible {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animated-bar__dot { animation: none; }
+    .animated-bar[data-animate] { opacity: 1; transition: none; }
+  }
+</style>

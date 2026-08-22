@@ -1,0 +1,272 @@
+---
+/**
+ * Intro.astro — Nosotros: introducción a la empresa
+ * ============================================
+ * Coreografía: eyebrow(↓ palabra) → title(→ palabra) → lead(↓ palabra)
+ * → barra(fade) → imágenes(↑ juntas) → texto(↑ línea) → servicios(↑ línea) → botón(→)
+ * Delays calculados en build time.
+ */
+import { siteConfig } from '../../config/site';
+import Button from '../ui/Button.astro';
+import AnimatedBar from '../ui/AnimatedBar.astro';
+import { UserCog } from 'lucide-astro';
+
+const { eyebrow, title, lead, text, services, cta, image1, image2 } = siteConfig.nosotrosIntro;
+
+// --- Utilidades de split ---
+const words = (s: string) => s.split(' ').filter(Boolean);
+const lines = (s: string) => s.split(/(?<=[.!?…])\s+/).filter(Boolean);
+
+const eyebrowW = words(eyebrow);
+const titleW = words(title);
+const leadW = words(lead);
+const textL = lines(text);
+
+// --- Coreografía (segundos) ---
+const WORD = 0.04;
+const LINE = 0.15;
+
+const tEyebrow = 0.1;
+const tTitle = tEyebrow + eyebrowW.length * WORD + 0.3;
+const tLead = tTitle + titleW.length * WORD + 0.3;
+const tBar = tLead + leadW.length * WORD + 0.3;
+const tImages = tBar + 0.3;
+const tText = tBar + 0.5;
+const tServices = tText + textL.length * LINE + 0.3;
+const tCta = tServices + services.length * LINE + 0.4;
+---
+
+<section class="intro" aria-label="Introducción a la empresa">
+  <div
+    class="intro__container"
+    data-animate
+    style={`--t-eyebrow: ${tEyebrow}s; --t-title: ${tTitle}s; --t-lead: ${tLead}s; --t-bar: ${tBar}s; --t-images: ${tImages}s; --t-text: ${tText}s; --t-services: ${tServices}s; --t-cta: ${tCta}s;`}
+  >
+    <!-- Columna 1: contenido -->
+    <div class="intro__content">
+      <p class="intro__eyebrow aw aw-down">
+        {eyebrowW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
+      </p>
+
+      <h1 class="intro__title aw aw-right">
+        {titleW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
+      </h1>
+
+      <p class="intro__lead aw aw-down">
+        {leadW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
+      </p>
+
+      <AnimatedBar start={tBar} />
+
+      <p class="intro__text al">
+        {textL.map((l, i) => <span class="l" style={`--l: ${i}`}>{l}</span>)}
+      </p>
+
+      <div class="intro__services">
+        <span class="intro__services-icon fade">
+          <UserCog size={40} />
+        </span>
+        <p class="al">
+          {services.map((l, i) => <span class="l" style={`--l: ${i}`}>{l}</span>)}
+        </p>
+      </div>
+
+      <div class="intro__cta anim-left">
+        <Button href={cta.url} variant="primary" size="md">{cta.text}</Button>
+      </div>
+    </div>
+
+    <!-- Columna 2: imágenes escalonadas -->
+    <div class="intro__visual">
+      <figure class="intro__fig intro__fig--1 rise">
+        <img src={image1} alt="Equipo Brandcomercial en presentación" loading="lazy" />
+      </figure>
+      <figure class="intro__fig intro__fig--2 rise">
+        <img src={image2} alt="Equipo Brandcomercial trabajando" loading="lazy" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     INTRO.CSS — Coreografía + grid responsive
+     ============================================ */
+
+  .intro {
+    padding: 7rem 0 4rem; /* padding-top compensa el header fijo */
+    background-color: var(--color-bg);
+  }
+
+  .intro__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 961px) {
+    .intro__container {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  /* --- Mapeo de delays por elemento --- */
+  .intro__eyebrow { --start: var(--t-eyebrow); }
+  .intro__title { --start: var(--t-title); }
+  .intro__lead { --start: var(--t-lead); }
+  .intro__text { --start: var(--t-text); }
+  .intro__services .al { --start: var(--t-services); }
+  .intro__services-icon { --start: var(--t-services); }
+  .intro__cta { --start: var(--t-cta); }
+  .intro__fig--1 { --start: var(--t-images); }
+  .intro__fig--2 { --start: calc(var(--t-images) + 0.25s); }
+
+  /* --- Estados iniciales --- */
+  .aw .w,
+  .al .l {
+    opacity: 0;
+    display: inline-block;
+  }
+
+  .al .l { display: block; transform: translateY(20px); }
+  .aw-down .w { transform: translateY(-30px); }
+  .aw-right .w { transform: translateX(40px); }
+
+  .fade,
+  .anim-left,
+  .rise { opacity: 0; }
+
+  .anim-left { transform: translateX(-40px); }
+  .rise { transform: translateY(40px); }
+
+  /* --- Disparadores con .is-visible del contenedor --- */
+  .intro__container.is-visible .aw .w {
+    animation: appear 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--start) + var(--w) * 0.04s);
+  }
+
+  .intro__container.is-visible .al .l {
+    animation: appear 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--start) + var(--l) * 0.15s);
+  }
+
+  .intro__container.is-visible .fade,
+  .intro__container.is-visible .anim-left,
+  .intro__container.is-visible .rise {
+    animation: appear 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: var(--start);
+  }
+
+  @keyframes appear {
+    to { opacity: 1; transform: translate(0, 0); }
+  }
+
+  /* --- Estilos de contenido --- */
+  .intro__content {
+    text-align: left;
+  }
+
+  .intro__eyebrow {
+    font-family: var(--font-heading);
+    font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.9rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-primary);
+  }
+
+  .intro__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 1.3rem + 2.5vw, 3rem);
+    line-height: 1.15;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .intro__lead {
+    font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1.05rem);
+    color: var(--color-text);
+    opacity: 0.85;
+  }
+
+  .intro__text {
+    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+    line-height: 1.7;
+    color: var(--color-text);
+    opacity: 0.85;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Icono + texto */
+  .intro__services {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .intro__services-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .intro__services .al {
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.9rem);
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.85;
+  }
+
+  /* --- Imágenes escalonadas con zoom hover independiente --- */
+  .intro__visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .intro__fig {
+    overflow: hidden;
+    border-radius: 1rem;
+    aspect-ratio: 4 / 3;
+    margin: 0;
+    box-shadow: 0 15px 40px rgba(10, 25, 47, 0.15);
+  }
+
+  .intro__fig--1 { grid-column: 2; }
+  .intro__fig--2 { grid-column: 1; margin-top: 4rem; }
+
+  @media (max-width: 960px) {
+    .intro__fig--2 { margin-top: -2rem; }
+  }
+
+  .intro__fig img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Zoom SOLO en la imagen con hover (independiente) */
+  .intro__fig:hover img {
+    transform: scale(1.06);
+  }
+
+  /* --- Accesibilidad --- */
+  @media (prefers-reduced-motion: reduce) {
+    .aw .w,
+    .al .l,
+    .fade,
+    .anim-left,
+    .rise {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
