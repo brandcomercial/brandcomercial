@@ -324,6 +324,19 @@ export const siteConfig = {
     }
   ],
 
+    // --- Página Nosotros: Sección 3 (ClientsStats) ---
+  nosotrosClients: {
+    title: "Nuestros clientes cuentan nuestra historia",
+    text: "Soluciones integrales en impresión y brandeo que transforman espacios en experiencias visuales impactantes.",
+    bgImage: "/nosotros/clientsStats/clients-stats.png",
+    stats: [
+      { value: 12, suffix: "+", label: "Años de experiencia" },
+      { value: 900, suffix: "+", label: "Proyectos realizados" },
+      { value: 100, suffix: "+", label: "Clientes felices" },
+      { value: 50, suffix: "+", label: "Productos" }
+    ]
+  },
+
 };
 
 // Helper para generar URL de WhatsApp

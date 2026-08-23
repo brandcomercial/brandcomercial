@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Intro from '../components/nosotros/Intro.astro';
 import BenefitsPlus from '../components/nosotros/BenefitsPlus.astro';
+import ClientsStats from '../components/nosotros/ClientsStats.astro'
 import { siteConfig } from '../config/site';
 import Benefits from '../components/home/Benefits.astro';
 ---
@@ -14,9 +15,17 @@ import Benefits from '../components/home/Benefits.astro';
   <PageHero data={siteConfig.nosotrosHero} variant="about" />
   <Intro />
   <BenefitsPlus/>
+  <ClientsStats/>
+
 </BaseLayout>
+
 
 <script>
   import { initScrollReveal } from '../utils/scrollReveal';
-  document.addEventListener('DOMContentLoaded', () => initScrollReveal());
+  import { initCountUp } from '../utils/countUp';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initScrollReveal();
+    initCountUp();
+  });
 </script>

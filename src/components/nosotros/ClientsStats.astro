@@ -1,0 +1,326 @@
+---
+/**
+ * ClientsStats.astro — Nosotros: clientes + contadores sobrepuestos
+ * ============================================
+ * - Fondo imagen + overlay oscuro + zoom hover (solo imagen)
+ * - Play → <dialog> placeholder (video próximamente)
+ * - Título palabra×palabra (izq→der) | texto línea×línea (der→izq)
+ * - Tarjeta blanca sobrepuesta (margin-bottom negativo) + count-up
+ */
+import { siteConfig } from '../../config/site';
+import { Play } from 'lucide-astro';
+
+const { title, text, bgImage, stats } = siteConfig.nosotrosClients;
+
+const words = (s: string) => s.split(' ').filter(Boolean);
+const lines = (s: string) => s.split(/(?<=[.!?…])\s+/).filter(Boolean);
+
+const titleW = words(title);
+const textL = lines(text);
+
+const WORD = 0.04;
+const LINE = 0.15;
+
+const tPlay = 0.1;
+const tTitle = 0.4;
+const tText = tTitle + titleW.length * WORD + 0.4;
+const tCard = tText + textL.length * LINE + 0.5;
+---
+
+<section
+  class="clients-stats"
+  aria-label="Nuestros clientes y cifras"
+  data-animate
+  style={`--t-play: ${tPlay}s; --t-title: ${tTitle}s; --t-text: ${tText}s; --t-card: ${tCard}s;`}
+>
+  <!-- Capa de fondo: imagen + overlay (zoom hover solo imagen) -->
+  <div class="clients-stats__bg" aria-hidden="true">
+    <img src={bgImage} alt="" />
+    <div class="clients-stats__overlay"></div>
+  </div>
+
+  <!-- Contenido centrado -->
+  <div class="clients-stats__container">
+    <button class="cs-play fade" type="button" aria-label="Reproducir video corporativo">
+      <Play size={28} fill="currentColor" />
+    </button>
+
+    <h2 class="cs-title aw">
+      {titleW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
+    </h2>
+
+    <p class="cs-text al-right">
+      {textL.map((l, i) => <span class="l" style={`--l: ${i}`}>{l}</span>)}
+    </p>
+  </div>
+
+  <!-- Tarjeta de contadores sobrepuesta -->
+  <div class="clients-stats__card rise">
+    {stats.map((s) => (
+      <div class="cs-stat">
+        <span class="cs-stat__value">
+          <span data-count-to={String(s.value)}>0</span>{s.suffix}
+        </span>
+        <span class="cs-stat__label">{s.label}</span>
+      </div>
+    ))}
+  </div>
+
+  <!-- Modal placeholder del video -->
+  <dialog class="cs-dialog">
+    <div class="cs-dialog__content">
+      <p class="cs-dialog__title">Video próximamente</p>
+      <p class="cs-dialog__text">Estamos preparando el video corporativo de Brandcomercial.</p>
+      <button class="cs-dialog__close" type="button">Cerrar</button>
+    </div>
+  </dialog>
+</section>
+
+<style>
+  /* ============================================
+     CLIENTS-STATS.CSS — Fondo oscuro + tarjeta sobrepuesta
+     ============================================ */
+
+  .clients-stats {
+    position: relative;
+    padding: 6rem 0 0;
+    overflow: visible; /* permite que la tarjeta sobresalga */
+  }
+
+  /* --- Fondo --- */
+  .clients-stats__bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .clients-stats__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Zoom SOLO la imagen al hover */
+  .clients-stats:hover .clients-stats__bg img {
+    transform: scale(1.05);
+  }
+
+  .clients-stats__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 25, 47, 0.85);
+  }
+
+  /* --- Contenido --- */
+  .clients-stats__container {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 3rem, 1200px);
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    padding-bottom: 4rem;
+  }
+
+  /* --- Botón play --- */
+  .cs-play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 1.75rem;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .cs-play:hover {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    transform: scale(1.08) rotate(25deg);
+  }
+
+  /* --- Título y texto --- */
+  .cs-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.2rem + 2.5vw, 3rem);
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 1.25rem;
+  }
+
+  .cs-text {
+    font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1.1rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* --- Tarjeta de contadores sobrepuesta --- */
+  .clients-stats__card {
+    position: relative;
+    z-index: 2;
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    translate: 0 50%; /* baja a la mitad de su propia altura*/ 
+    background: #fff;
+    border-radius: 1rem;
+    padding: 2.75rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (min-width: 768px) {
+    .clients-stats__card {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cs-stat {
+    text-align: center;
+  }
+
+  .cs-stat__value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 1.4rem + 1.5vw, 2.6rem);
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+
+  .cs-stat__label {
+    font-family: var(--font-heading);
+    font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.9rem);
+    font-weight: 600;
+    color: var(--color-secondary);
+  }
+
+  /* --- Animaciones --- */
+  .fade { opacity: 0; }
+
+  .aw .w {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-40px); /* entra desde la izquierda */
+  }
+
+  .al-right .l {
+    display: block;
+    opacity: 0;
+    transform: translateX(40px); /* entra desde la derecha */
+  }
+
+  .rise {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .clients-stats.is-visible .fade {
+    animation: appear 0.6s ease forwards;
+    animation-delay: var(--t-play);
+  }
+
+  .clients-stats.is-visible .aw .w {
+    animation: appear 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--t-title) + var(--w) * 0.04s);
+  }
+
+  .clients-stats.is-visible .al-right .l {
+    animation: appear 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--t-text) + var(--l) * 0.15s);
+  }
+
+  .clients-stats.is-visible .rise {
+    animation: appear 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: var(--t-card);
+  }
+
+  @keyframes appear {
+    to { opacity: 1; transform: translate(0, 0); }
+  }
+
+  /* --- Dialog (modal video) --- */
+  .cs-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    height: fit-content;
+    border: none;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    max-width: 640px;
+    width: 90%;
+  }
+
+  .cs-dialog::backdrop {
+    background: rgba(10, 25, 47, 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .cs-dialog__content {
+    text-align: center;
+    color: var(--color-text);
+  }
+
+  .cs-dialog__title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .cs-dialog__text {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cs-dialog__close {
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* --- Accesibilidad --- */
+  @media (prefers-reduced-motion: reduce) {
+    .fade, .aw .w, .al-right .l, .rise {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .clients-stats:hover .clients-stats__bg img {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const play = document.querySelector('.cs-play');
+    const dialog = document.querySelector('.cs-dialog');
+    const close = document.querySelector('.cs-dialog__close');
+    if (!play || !dialog || !close) return;
+
+    play.addEventListener('click', () => dialog.showModal());
+    close.addEventListener('click', () => dialog.close());
+  });
+</script>
