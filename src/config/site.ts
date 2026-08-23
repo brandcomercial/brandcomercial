@@ -356,6 +356,40 @@ export const siteConfig = {
     imageAlt: "Profesional de Brandcomercial trabajando en diseño gráfico"
   },
 
+    // --- Página Nosotros: Sección 6 (MissionVision) ---
+  nosotrosMission: {
+    eyebrow: "Misión & Visión",
+    title: "La esencia que impulsa tu **marca**",
+    tabs: [
+      {
+        label: "Nuestra Misión",
+        text: "Transformar ideas en experiencias visuales de alto impacto, con soluciones gráficas integrales, calidad y asesoría personalizada."
+      },
+      {
+        label: "Nuestra Visión",
+        text: "Ser la empresa publicitaria de referencia, reconocida por innovación, calidad de producción y la confianza de nuestros clientes."
+      },
+      {
+        label: "Nuestro Valores",
+        text: "Compromiso, innovación, puntualidad y pasión por el detalle en cada proyecto."
+      }
+    ],
+    accordion: [
+      {
+        title: "Nuestra historia",
+        text: "Brandcomercial Spotz nació hace más de 12 años con la idea de ofrecer al publico una orientacion publicitaria de su requerimiento. Hoy combinamos producción propia, creatividad y tecnología para atender campañas integrales en todo el país desde nuestro taller de impresiones."
+      },
+      {
+        title: "Producción propia",
+        text: "Taller equipado para impresión de gran formato, corpóreos, señaléticas y acabados profesionales con control de calidad en cada pieza."
+      },
+      {
+        title: "Compromiso con el cliente",
+        text: "Acompañamos tu proyecto desde la idea hasta la instalación final, con asesoría personalizada en cada etapa."
+      }
+    ]
+  },
+
 };
 
 // Helper para generar URL de WhatsApp

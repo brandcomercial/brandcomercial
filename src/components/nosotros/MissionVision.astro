@@ -1,0 +1,445 @@
+---
+/**
+ * MissionVision.astro — Nosotros: misión, visión y valores
+ * ============================================
+ * - Izquierda: eyebrow + título acentuado + tabs (pills) + texto activo
+ * - Derecha: acordeón (1er ítem abierto) con animación grid-rows
+ * - Fondo azul noche con textura diagonal (coherente con PageHero)
+ * - Accesible: role tablist/tab/tabpanel + aria-expanded
+ */
+import { siteConfig } from '../../config/site';
+import { Paperclip } from 'lucide-astro';
+
+const { eyebrow, title, tabs, accordion } = siteConfig.nosotrosMission;
+
+const words = (s: string) => s.split(' ').filter(Boolean);
+const titleW = words(title);
+
+const WORD = 0.04;
+const tEyebrow = 0.1;
+const tTitle = 0.3;
+const tPills = tTitle + titleW.length * WORD + 0.3;
+const tText = tPills + 0.35;
+const tAcc = 0.5;
+---
+
+<section class="mission" aria-label="Misión, visión y valores">
+  <div
+    class="mission__container"
+    data-animate
+    style={`--t-eyebrow: ${tEyebrow}s; --t-title: ${tTitle}s; --t-pills: ${tPills}s; --t-text: ${tText}s; --t-acc: ${tAcc}s;`}
+  >
+    <!-- Columna izquierda -->
+    <div class="mission__left">
+      <p class="mission__eyebrow anim-up">
+        <Paperclip size={18} />
+        {eyebrow}
+      </p>
+
+      <h2 class="mission__title aw">
+        {titleW.map((w, i) => {
+          const accent = w.startsWith('**') && w.endsWith('**');
+          const clean = accent ? w.slice(2, -2) : w;
+          return (
+            <span class={`w ${accent ? 'w--accent' : ''}`} style={`--w: ${i}`}>
+              {clean}&nbsp;
+            </span>
+          );
+        })}
+      </h2>
+
+      <div class="mission__tabs" role="tablist" aria-label="Misión, visión y valores">
+        {tabs.map((t, i) => (
+          <button
+            type="button"
+            class={`mission__pill fade ${i === 0 ? 'is-active' : ''}`}
+            role="tab"
+            id={`mv-tab-${i}`}
+            aria-selected={i === 0}
+            aria-controls={`mv-panel-${i}`}
+            data-tab={i}
+            style={`--i: ${i}`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tabs.map((t, i) => (
+        <p
+          class={`mission__text ${i === 0 ? 'is-active' : ''}`}
+          role="tabpanel"
+          id={`mv-panel-${i}`}
+          aria-labelledby={`mv-tab-${i}`}
+          data-panel={i}
+          hidden={i !== 0}
+        >
+          {t.text}
+        </p>
+      ))}
+    </div>
+
+    <!-- Columna derecha: acordeón -->
+    <div class="mission__acc">
+      {accordion.map((item, i) => (
+        <div class={`acc-item slide-right ${i === 0 ? 'is-open' : ''}`} style={`--i: ${i}`}>
+          <button
+            type="button"
+            class="acc-item__head"
+            id={`acc-head-${i}`}
+            aria-expanded={i === 0}
+            aria-controls={`acc-panel-${i}`}
+          >
+            <span class="acc-item__num">0{i + 1}</span>
+            <span class="acc-item__label">{item.title}</span>
+            <span class="acc-item__icon" aria-hidden="true"></span>
+          </button>
+          <div
+            class="acc-item__body"
+            id={`acc-panel-${i}`}
+            role="region"
+            aria-labelledby={`acc-head-${i}`}
+          >
+            <div class="acc-item__inner">
+              <p>{item.text}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     MISSION-VISION.CSS — Tabs + acordeón sobre azul noche
+     ============================================ */
+
+  .mission {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, #0A192F 0%, #16324F 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Textura diagonal (coherente con PageHero) */
+  .mission::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      115deg,
+      transparent 0px,
+      transparent 60px,
+      rgba(255, 255, 255, 0.025) 60px,
+      rgba(255, 255, 255, 0.025) 61px
+    );
+    pointer-events: none;
+  }
+
+  .mission__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 961px) {
+    .mission__container {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  /* --- Mapeo de delays --- */
+  .mission__eyebrow { --start: var(--t-eyebrow); }
+  .mission__title { --start: var(--t-title); }
+  .mission__pill { --start: calc(var(--t-pills) + var(--i) * 0.12s); }
+  .mission__acc .slide-right { --start: calc(var(--t-acc) + var(--i) * 0.15s); }
+
+  /* --- Estados iniciales --- */
+  .anim-up, .fade { opacity: 0; }
+  .anim-up { transform: translateY(25px); }
+
+  .slide-right {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  .aw .w {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  /* --- Disparadores --- */
+  .mission__container.is-visible .anim-up,
+  .mission__container.is-visible .fade,
+  .mission__container.is-visible .slide-right {
+    animation: appear 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: var(--start);
+  }
+
+  .mission__container.is-visible .aw .w {
+    animation: appear 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--start) + var(--w) * 0.04s);
+  }
+
+  @keyframes appear {
+    to { opacity: 1; transform: translate(0, 0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- Eyebrow --- */
+  .mission__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.9rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+  }
+
+  /* --- Título --- */
+  .mission__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 1.3rem + 2.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin-bottom: 2rem;
+  }
+
+  .w--accent {
+    color: var(--color-secondary);
+  }
+
+  /* --- Pills (tabs) --- */
+  .mission__tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  @media (min-width: 560px){
+    .mission__tabs{
+        grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .mission__pill {
+    width: 100%;
+    text-align: center;
+    padding: 0.7rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  @media (min-width: 961px){
+    .mission__pill{
+        font-size: 0.85rem;
+        padding: 0.7rem 1rem;
+    }
+  }
+
+  .mission__pill:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  .mission__pill.is-active {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: #fff;
+  }
+
+  /* --- Texto del tab activo --- */
+  .mission__text {
+    font-size: clamp(0.9rem, 0.85rem + 0.25vw, 1.05rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 100%;
+  }
+
+  .mission__text.is-active {
+    animation: fadeIn 0.4s ease;
+  }
+
+  /* --- Acordeón --- */
+  .acc-item {
+    background: #fff;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .acc-item__head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .acc-item__num {
+    color: var(--color-secondary);
+    font-weight: 700;
+  }
+
+  .acc-item__label {
+    flex: 1;
+    transition: color 0.3s ease;
+  }
+
+  .acc-item.is-open .acc-item__label {
+    color: var(--color-secondary);
+  }
+
+  /* Icono +/− puro CSS */
+  .acc-item__icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .acc-item__icon::before,
+  .acc-item__icon::after {
+    content: '';
+    position: absolute;
+    background: var(--color-primary);
+    transition: transform 0.3s ease;
+  }
+
+  .acc-item__icon::before {
+    left: 0; right: 0; top: 6px; height: 2px;
+  }
+
+  .acc-item__icon::after {
+    top: 0; bottom: 0; left: 6px; width: 2px;
+  }
+
+  .acc-item.is-open .acc-item__icon::after {
+    transform: scaleY(0); /* el + se convierte en − */
+  }
+
+  /* Animación suave sin medir alturas */
+  .acc-item__body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .acc-item.is-open .acc-item__body {
+    grid-template-rows: 1fr;
+  }
+
+  .acc-item__inner {
+    overflow: hidden;
+  }
+
+  .acc-item__inner p {
+    padding: 0 1.5rem 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.85;
+  }
+
+  /* --- Accesibilidad --- */
+  @media (prefers-reduced-motion: reduce) {
+    .anim-up, .fade, .slide-right, .aw .w {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .acc-item__body {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    /* --- Tabs misión/visión/valores --- */
+    const tabs = document.querySelectorAll('.mission__pill');
+    const panels = document.querySelectorAll('.mission__text');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const idx = tab.getAttribute('data-tab');
+
+        tabs.forEach((t) => {
+          const active = t.getAttribute('data-tab') === idx;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
+
+        panels.forEach((p) => {
+          const active = p.getAttribute('data-panel') === idx;
+          p.classList.toggle('is-active', active);
+          if (active) p.removeAttribute('hidden');
+          else p.setAttribute('hidden', '');
+        });
+      });
+    });
+
+    /* --- Acordeón --- */
+        /* --- Acordeón exclusivo: uno abierto a la vez --- */
+    const heads = document.querySelectorAll('.acc-item__head');
+    heads.forEach((head) => {
+      head.addEventListener('click', () => {
+        const item = head.closest('.acc-item');
+        if (!item) return;
+        const wasOpen = item.classList.contains('is-open');
+
+        // cierra todos
+        document.querySelectorAll('.acc-item').forEach((it) => {
+          it.classList.remove('is-open');
+          const h = it.querySelector('.acc-item__head');
+          if (h) h.setAttribute('aria-expanded', 'false');
+        });
+
+        // abre el clickeado solo si estaba cerrado
+        if (!wasOpen) {
+          item.classList.add('is-open');
+          head.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
