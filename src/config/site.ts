@@ -305,6 +305,25 @@ export const siteConfig = {
     image2: "/nosotros/hero/grupo-trabajo.png",
   },
 
+    // --- Página Nosotros: Sección 2 (BenefitsPlus) ---
+  nosotrosBenefits: [
+    {
+      icon: 'handshake',
+      title: 'Servicio de Confianza',
+      text: 'El compromiso con cada proyecto se refleja en los detalles: garantizamos la satisfacción de nuestros clientes en cada entrega.'
+    },
+    {
+      icon: 'headset',
+      title: 'Asesoría Plus',
+      text: 'Convertimos cada consulta en una experiencia única, con atención personalizada que se adapta a tus necesidades específicas.'
+    },
+    {
+      icon: 'users',
+      title: 'Expertos & Profesionales',
+      text: 'Transformamos ideas en soluciones efectivas y desafíos en oportunidades, con pasión y dedicación en cada detalle.'
+    }
+  ],
+
 };
 
 // Helper para generar URL de WhatsApp

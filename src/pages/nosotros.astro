@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Intro from '../components/nosotros/Intro.astro';
+import BenefitsPlus from '../components/nosotros/BenefitsPlus.astro';
 import { siteConfig } from '../config/site';
+import Benefits from '../components/home/Benefits.astro';
 ---
 
 <BaseLayout
@@ -11,6 +13,7 @@ import { siteConfig } from '../config/site';
 >
   <PageHero data={siteConfig.nosotrosHero} variant="about" />
   <Intro />
+  <BenefitsPlus/>
 </BaseLayout>
 
 <script>

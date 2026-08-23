@@ -1,0 +1,167 @@
+---
+/**
+ * BenefitsPlus.astro — Nosotros: beneficios con inversión de color
+ * ============================================
+ * - 3 cards independientes (gap, sin sombras)
+ * - Hover: inversión limpia (fondo azul, blob naranja, textos blancos)
+ * - Iconos de línea (Lucide stroke, sin relleno)
+ * - Blob orgánico estático (coherente con PageHero)
+ * - Entrada: desde arriba con stagger 0.15s
+ */
+import { siteConfig } from '../../config/site';
+import { Handshake, Headset, Users } from 'lucide-astro';
+
+const iconMap: Record<string, any> = {
+  handshake: Handshake,
+  headset: Headset,
+  users: Users,
+};
+
+const cards = siteConfig.nosotrosBenefits.map((c) => ({
+  ...c,
+  Icon: iconMap[c.icon] || Handshake,
+}));
+---
+
+<section class="benefits-plus" aria-label="Beneficios de trabajar con nosotros">
+  <div class="benefits-plus__container" data-animate style="--start: 0.1s;">
+    {cards.map((card, i) => (
+      <article class="bp-card" style={`--i: ${i}`}>
+        <span class="bp-card__blob" aria-hidden="true">
+          <card.Icon size={36} />
+        </span>
+        <h3 class="bp-card__title">{card.title}</h3>
+        <p class="bp-card__text">{card.text}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     BENEFITS-PLUS.CSS — Inversión limpia sin sombras
+     ============================================ */
+
+  .benefits-plus {
+    padding: 4rem 0;
+    background-color: var(--color-bg);
+  }
+
+  .benefits-plus__container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .benefits-plus__container {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .benefits-plus__container {
+      gap: 2rem;
+    }
+  }
+
+  /* --- Card: estado normal --- */
+    .bp-card {
+    background-color: #fff;
+    border: 2px solid var(--color-primary);
+    border-radius: 1rem;
+    padding: 2.75rem 1.5rem;
+    text-align: center;
+    user-select: none;
+    -moz-user-select: none;
+    transition:
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      translate 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* entrada desde arriba */
+    opacity: 0;
+    transform: translateY(-30px);
+    }
+
+  .benefits-plus__container.is-visible .bp-card {
+    animation: bpAppear 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--start) + var(--i) * 0.15s);
+  }
+
+  @keyframes bpAppear {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- Blob orgánico estático --- */
+  .bp-card__blob {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 84px;
+    height: 84px;
+    background-color: var(--color-primary);
+    color: #fff;
+    border-radius: 58% 42% 45% 55% / 48% 45% 55% 52%;
+    margin-bottom: 1.5rem;
+    transition: background-color 0.6s ease, transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* --- Textos --- */
+  .bp-card__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+    transition: color 0.4s ease;
+  }
+
+  .bp-card__text {
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.9rem);
+    line-height: 1.65;
+    color: var(--color-text);
+    opacity: 0.8;
+    transition: color 0.4s ease;
+  }
+
+  /* --- Hover: inversión limpia (sin sombras, sin translateY) --- */
+  .bp-card:hover {
+    background-color: var(--color-primary);
+    border-color: transparent;
+    translate: 0 -10px;
+  }
+
+    .bp-card:hover .bp-card__blob {
+    background-color: var(--color-secondary);
+    transform: rotate(25deg);
+  }
+
+  .bp-card:hover .bp-card__title {
+    color: #fff;
+  }
+
+  .bp-card:hover .bp-card__text {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* --- Accesibilidad --- */
+  @media (prefers-reduced-motion: reduce) {
+    .bp-card {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .bp-card:hover{
+        translate: 0 0;
+    }
+
+    .bp-card:hover .bp-card__blob{
+        transform: none;
+    }
+  }
+</style>
