@@ -337,6 +337,25 @@ export const siteConfig = {
     ]
   },
 
+    // --- Página Nosotros: Sección 4 (WhyUs) ---
+  nosotrosWhyUs: {
+    eyebrow: "Por qué elegirnos",
+    number: 12,
+    title: "Años de experiencia que respaldan tu marca",
+    paragraphs: [
+      "En Brandcomercial combinamos creatividad, tecnología y producción propia para transformar ideas en experiencias visuales de alto impacto.",
+      "Desde gigantografías y banderolas hasta brandeo corporativo completo: acompañamos tu proyecto con asesoría personalizada y acabados profesionales."
+    ],
+    checks: [
+      "Trabajadores expertos",
+      "Asesoría personalizada",
+      "Mejores prácticas y soluciones",
+      "Servicio profesional"
+    ],
+    image: "/nosotros/whyUs/persona-trabajando.jpg",
+    imageAlt: "Profesional de Brandcomercial trabajando en diseño gráfico"
+  },
+
 };
 
 // Helper para generar URL de WhatsApp
