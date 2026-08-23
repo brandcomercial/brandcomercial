@@ -160,7 +160,7 @@ const whatsappUrl = getWhatsAppUrl();
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: transparent;
+    background-color: #ffffff;
     transition:
       background-color 0.3s ease,
       box-shadow 0.3s ease;
@@ -307,6 +307,8 @@ const whatsappUrl = getWhatsAppUrl();
     background: none;
     border: none;
     cursor: pointer;
+    user-select: none;
+     -webkit-user-select: none;
     color: var(--color-primary);
     transition: color 0.3s ease;
   }
@@ -351,6 +353,7 @@ const whatsappUrl = getWhatsAppUrl();
     bottom: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh;
     background-color: var(--color-primary);
     padding: 2rem 1.5rem;
     z-index: 999;

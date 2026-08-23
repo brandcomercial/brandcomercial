@@ -239,7 +239,7 @@ export const siteConfig = {
     eyebrow: "¿Listo para empezar?",
     title: "Hagamos realidad tu proyecto",
     text: "Cuéntanos tu idea y recibe una cotización personalizada en menos de 24 horas.",
-    cta: "Cotizar por WhatsApp",
+    cta: "Cotizar WhatsApp",
     url: "https://wa.me/51977938339?text=Hola%2C%20quiero%20cotizar%20un%20proyecto"
   },
 
@@ -252,6 +252,8 @@ export const siteConfig = {
     {name: "Standley", image: "/brands/nike logo.jpg"},
   ],
 
+
+  /* desde aqui empieza la pagina "Nosotros" */
     // --- Acerca de nosotros (Home) ---
   aboutHome: {
     eyebrow: "Sobre nosotros",
@@ -264,6 +266,7 @@ export const siteConfig = {
     ctaBrochure: { text: "Descargar brochure", url: "/brochure BC 2026.pdf" },
     image: "/home/about/grupo de trabajo.png"
   },
+
 
   // --- Redes sociales (SocialOrbit) ---
   socials: [
@@ -279,11 +282,12 @@ export const siteConfig = {
     eyebrow: "Bienvenido a Brandcomercial",
     title: "Libertad e innovación para tu marca",
     text: "Transformamos ideas en experiencias visuales impactantes con soluciones gráficas de gran formato, brandeo corporativo e instalación profesional.",
-    cta: { text: "Nuestra historia", url: "#intro" },
     image: "/nosotros/hero/grupo-trabajo.png",
+    cta: { text: "Descargar catálogo", url: "/catalogo-brandcomercial2026.pdf", download: true },
     imageAlt: "Equipo Brandcomercial trabajando en proyecto de brandeo",
     card: { value: "+12", label: "Años transformando marcas" }
   },
+
 
     // --- Página Nosotros: Sección 1 (Intro) ---
     nosotrosIntro: {

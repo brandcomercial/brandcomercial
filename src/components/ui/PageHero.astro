@@ -15,7 +15,7 @@ interface HeroData {
   eyebrow: string;
   title: string;
   text: string;
-  cta: { text: string; url: string };
+  cta: { text: string; url: string; download?: boolean };
   image: string;
   imageAlt: string;
   card: { value: string; label: string };
@@ -25,6 +25,8 @@ interface Props {
   data: HeroData;
   variant?: 'about' | 'services' | 'projects' | 'contact';
 }
+
+
 
 const { data, variant = 'about' } = Astro.props;
 
@@ -61,7 +63,9 @@ const tCard = tImage + 0.6;
       <p class="page-hero__text anim anim--up">{data.text}</p>
 
       <div class="page-hero__cta anim anim--left">
-        <Button href={data.cta.url} variant="primary" size="md">{data.cta.text}</Button>
+                <Button href={data.cta.url} variant="primary" size="md" download={data.cta.download ?? false}>
+          {data.cta.text}
+        </Button>
       </div>
     </div>
 
@@ -114,7 +118,7 @@ const tCard = tImage + 0.6;
   @media (min-width: 961px) {
     .page-hero {
       min-height: 75vh;
-      padding: 5rem 0;
+      padding: 8rem 0 4rem; /*se mejoro el comportamiento de altura en laptop*/
     }
   }
 
@@ -162,7 +166,7 @@ const tCard = tImage + 0.6;
 
   /* --- Disparadores --- */
     .page-hero__container.is-visible .anim,
-  .page-hero__container.is-visible .rise {
+    .page-hero__container.is-visible .rise {
     animation: appear 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: var(--start);
   }
@@ -290,8 +294,8 @@ const tCard = tImage + 0.6;
     gap: 0.15rem;
     padding: 1rem 1.5rem;
     background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 0.75rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);

@@ -314,18 +314,12 @@ const tCta = tServices + services.length * LINE + 0.4;
     transform: scale(1.06);
   }
 
-  /* --- Botón azul noche --- */
+  /* --- Botón azul noche con barrido propio --- */
   .intro__cta :global(.btn.btn--primary) {
+    --sweep: #0a377a; /* barrido azul más oscuro */
     background-color: var(--color-primary);
     color: #fff;
-    border: 2px solid var(--color-primary);
     box-shadow: none;
-  }
-
-  .intro__cta :global(.btn.btn--primary:hover) {
-    background-color: #0d2547;
-    border-color: #0d2547;
-    transform: translateY(-2px);
   }
 
   @media (prefers-reduced-motion: reduce) {

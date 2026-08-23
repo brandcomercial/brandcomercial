@@ -9,17 +9,18 @@
  * - Botón brochure: md en tablet/móvil, lg en desktop
  * ============================================
  */
-import { siteConfig } from '../../config/site';
-import SocialOrbit from '../ui/SocialOrbit.astro';
+import { siteConfig } from "../../config/site";
+import SocialOrbit from "../ui/SocialOrbit.astro";
 
-const { eyebrow, title, text, stats, ctaBrochure, image } = siteConfig.aboutHome;
+const { eyebrow, title, text, stats, ctaBrochure, image } =
+  siteConfig.aboutHome;
 
 // --- Cálculo de delays para AMBOS órdenes ---
 const WORD = 0.04;
-const textWords = text.split(' ').filter(Boolean);
+const textWords = text.split(" ").filter(Boolean);
 const statsTokens = stats.reduce(
-  (acc, s) => acc + 1 + s.label.split(' ').filter(Boolean).length,
-  0
+  (acc, s) => acc + 1 + s.label.split(" ").filter(Boolean).length,
+  0,
 );
 
 // Móvil: eyebrow → title → text → stats → cta → image → orbit
@@ -42,8 +43,8 @@ const dCta = dStats + statsTokens * WORD + 0.4;
 ---
 
 <section class="about-home" aria-label="Acerca de nosotros">
-  <div 
-    class="about-home__container" 
+  <div
+    class="about-home__container"
     data-animate
     style={`--m-eyebrow: ${mEyebrow}s; --m-title: ${mTitle}s; --m-text: ${mText}s; --m-stats: ${mStats}s; --m-cta: ${mCta}s; --m-image: ${mImage}s; --m-orbit: ${mOrbit}s; --d-eyebrow: ${dEyebrow}s; --d-title: ${dTitle}s; --d-image: ${dImage}s; --d-orbit: ${dOrbit}s; --d-text: ${dText}s; --d-stats: ${dStats}s; --d-cta: ${dCta}s;`}
   >
@@ -54,34 +55,52 @@ const dCta = dStats + statsTokens * WORD + 0.4;
       <h2 class="about-home__title anim anim--up">{title}</h2>
 
       <p class="about-home__text anim-words anim--right">
-        {textWords.map((w, i) => (
-          <span class="word" style={`--w: ${i}`}>{w}&nbsp;</span>
-        ))}
+        {
+          textWords.map((w, i) => (
+            <span class="word" style={`--w: ${i}`}>
+              {w}&nbsp;
+            </span>
+          ))
+        }
       </p>
 
-            <div class="about-home__stats">
-        {stats.map((stat, si) => {
-          const labelWords = stat.label.split(' ').filter(Boolean);
-          const baseIndex = stats
-            .slice(0, si)
-            .reduce((acc, s) => acc + 1 + s.label.split(' ').filter(Boolean).length, 0);
-          return (
-            <div class="about-home__stat anim-words anim--left">
-              <span class="stat-value word" style={`--w: ${baseIndex}`}>{stat.value}</span>
-              <span class="stat-label">
-                {labelWords.map((w, wi) => (
-                  <span class="word word--label" style={`--w: ${baseIndex + 1 + wi}`}>
-                    {w}&nbsp;
-                  </span>
-                ))}
-              </span>
-            </div>
-          );
-        })}
+      <div class="about-home__stats">
+        {
+          stats.map((stat, si) => {
+            const labelWords = stat.label.split(" ").filter(Boolean);
+            const baseIndex = stats
+              .slice(0, si)
+              .reduce(
+                (acc, s) => acc + 1 + s.label.split(" ").filter(Boolean).length,
+                0,
+              );
+            return (
+              <div class="about-home__stat anim-words anim--left">
+                <span class="stat-value word" style={`--w: ${baseIndex}`}>
+                  {stat.value}
+                </span>
+                <span class="stat-label">
+                  {labelWords.map((w, wi) => (
+                    <span
+                      class="word word--label"
+                      style={`--w: ${baseIndex + 1 + wi}`}
+                    >
+                      {w}&nbsp;
+                    </span>
+                  ))}
+                </span>
+              </div>
+            );
+          })
+        }
       </div>
 
       <div class="about-home__actions">
-        <a href={ctaBrochure.url} download class="about-home__brochure anim anim--left">
+        <a
+          href={ctaBrochure.url}
+          download
+          class="about-home__brochure anim anim--left"
+        >
           {ctaBrochure.text}
         </a>
       </div>
@@ -89,10 +108,10 @@ const dCta = dStats + statsTokens * WORD + 0.4;
 
     <!-- Columna derecha: imagen + órbita -->
     <div class="about-home__visual">
-      <img 
-        src={image} 
-        alt="Equipo Brandcomercial" 
-        loading="lazy" 
+      <img
+        src={image}
+        alt="Equipo Brandcomercial"
+        loading="lazy"
         class="about-home__img anim anim--up"
       />
       <div class="about-home__orbit">
@@ -113,6 +132,7 @@ const dCta = dStats + statsTokens * WORD + 0.4;
     align-items: center;
     padding: 4rem 0;
     background-color: var(--color-bg);
+    overflow-x: clip;
   }
 
   .about-home__container {
@@ -139,22 +159,50 @@ const dCta = dStats + statsTokens * WORD + 0.4;
   }
 
   /* --- Delays por breakpoint (variables del contenedor) --- */
-  .about-home__eyebrow { --start: var(--m-eyebrow); }
-  .about-home__title { --start: var(--m-title); }
-  .about-home__text { --start: var(--m-text); }
-  .about-home__stat { --start: var(--m-stats); }
-  .about-home__brochure { --start: var(--m-cta); }
-  .about-home__img { --start: var(--m-image); }
-  .about-home__orbit { --start: var(--m-orbit); }
+  .about-home__eyebrow {
+    --start: var(--m-eyebrow);
+  }
+  .about-home__title {
+    --start: var(--m-title);
+  }
+  .about-home__text {
+    --start: var(--m-text);
+  }
+  .about-home__stat {
+    --start: var(--m-stats);
+  }
+  .about-home__brochure {
+    --start: var(--m-cta);
+  }
+  .about-home__img {
+    --start: var(--m-image);
+  }
+  .about-home__orbit {
+    --start: var(--m-orbit);
+  }
 
   @media (min-width: 961px) {
-    .about-home__eyebrow { --start: var(--d-eyebrow); }
-    .about-home__title { --start: var(--d-title); }
-    .about-home__text { --start: var(--d-text); }
-    .about-home__stat { --start: var(--d-stats); }
-    .about-home__brochure { --start: var(--d-cta); }
-    .about-home__img { --start: var(--d-image); }
-    .about-home__orbit { --start: var(--d-orbit); }
+    .about-home__eyebrow {
+      --start: var(--d-eyebrow);
+    }
+    .about-home__title {
+      --start: var(--d-title);
+    }
+    .about-home__text {
+      --start: var(--d-text);
+    }
+    .about-home__stat {
+      --start: var(--d-stats);
+    }
+    .about-home__brochure {
+      --start: var(--d-cta);
+    }
+    .about-home__img {
+      --start: var(--d-image);
+    }
+    .about-home__orbit {
+      --start: var(--d-orbit);
+    }
   }
 
   /* --- Estado inicial --- */
@@ -163,12 +211,23 @@ const dCta = dStats + statsTokens * WORD + 0.4;
     opacity: 0;
   }
 
-  .anim.anim--left { transform: translateX(-40px); }
-  .anim--up { transform: translateY(40px); }
-  .anim-words .word { display: inline-block; transform: translateX(40px); }
-  .anim-words.anim--left .word { transform: translateX(-40px); }
+  .anim.anim--left {
+    transform: translateX(-40px);
+  }
+  .anim--up {
+    transform: translateY(40px);
+  }
+  .anim-words .word {
+    display: inline-block;
+    transform: translateX(40px);
+  }
+  .anim-words.anim--left .word {
+    transform: translateX(-40px);
+  }
 
-  .about-home__orbit { opacity: 0; }
+  .about-home__orbit {
+    opacity: 0;
+  }
 
   /* --- Animaciones al activarse --- */
   .about-home__container.is-visible .anim {
@@ -188,15 +247,23 @@ const dCta = dStats + statsTokens * WORD + 0.4;
   }
 
   @keyframes reveal {
-    to { opacity: 1; transform: translate(0, 0); }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
   }
 
   @keyframes revealWord {
-    to { opacity: 1; transform: translateX(0); }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   @keyframes fadeIn {
-    to { opacity: 1; }
+    to {
+      opacity: 1;
+    }
   }
 
   /* --- Estilos de contenido --- */
@@ -229,7 +296,7 @@ const dCta = dStats + statsTokens * WORD + 0.4;
   }
 
   /* Stats: valor arriba, label en línea debajo */
-    /* Stats: contenedor alinea por la base (flex-end) */
+  /* Stats: contenedor alinea por la base (flex-end) */
   .about-home__stats {
     display: flex;
     align-items: flex-end; /* ← todos los stats comparten la misma línea base */
@@ -291,10 +358,13 @@ const dCta = dStats + statsTokens * WORD + 0.4;
 
   /* Botón brochure: md en móvil/tablet, lg en desktop */
   .about-home__brochure {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.7rem 1.0rem;
+    gap: 0.5rem;
     font-family: var(--font-heading);
     font-size: 0.85rem;
     font-weight: 600;
@@ -302,7 +372,22 @@ const dCta = dStats + statsTokens * WORD + 0.4;
     background-color: var(--color-primary);
     border-radius: 0.5rem;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    white-space: nowrap;
+    transition: transform 0.2s ease;
+  }
+
+   .about-home__brochure::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--color-primary-alternativy);
+    transform: translateX(-101%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+   .about-home__brochure:hover::before {
+    transform: translateX(0);
   }
 
   @media (min-width: 961px) {
@@ -312,10 +397,11 @@ const dCta = dStats + statsTokens * WORD + 0.4;
     }
   }
 
+  /*
   .about-home__brochure:hover {
-    background-color: #12386e;/* color boton :hover*/
+    background-color: #12386e; color boton :hover
     transform: translateY(-2px);
-  }
+  }*/
 
   /* Visual derecho */
   .about-home__visual {
@@ -359,6 +445,6 @@ const dCta = dStats + statsTokens * WORD + 0.4;
 </style>
 
 <script>
-  import { initScrollReveal } from '../../utils/scrollReveal';
-  document.addEventListener('DOMContentLoaded', () => initScrollReveal());
+  import { initScrollReveal } from "../../utils/scrollReveal";
+  document.addEventListener("DOMContentLoaded", () => initScrollReveal());
 </script>

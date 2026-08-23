@@ -9,6 +9,10 @@
   padding: 0;
 }
 
+html,
+body{
+  overflow-x: clip;
+}
 body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
@@ -31,8 +35,9 @@ a {
 /* 2. VARIABLES DE MARCA */
 :root {
   --color-primary: #0A192F;
+  --color-primary-alternativy: #0a377a;
   --color-secondary: #FF6B35;
-  --color-alternativy-secondary:  #d8ad9d;
+  --color-secondary-alternativy: #FE5000;
   --color-text: #2D3748;
   --color-bg: #FFFFFF;
 

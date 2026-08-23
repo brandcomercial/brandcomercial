@@ -12,14 +12,16 @@ interface Props {
   variant?: 'primary' | 'dark' | 'whatsapp' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   href: string;
+  download?: boolean;
   external?: boolean;
   class?: string;
 }
 
 const {
+  href,
   variant = 'primary',
   size = 'md',
-  href,
+  download = false,
   external = false,
   class: className = ''
 } = Astro.props;
@@ -30,21 +32,23 @@ const linkAttrs = external
   : {};
 ---
 
-<a 
-  href={href} 
-  class={`btn btn--${variant} btn--${size} ${className}`}
+  <a
+  href={href} class={`btn btn--${variant} btn--${size} ${className}`}
+  download={download}
   {...linkAttrs}
 >
   <slot />
 </a>
-
 <style>
   /* ============================================
-     BUTTON.CSS — Estilos del componente Button
+     BUTTON.CSS — Sweep hover (barrido izq→der)
      Mobile-First + tipografía fluida
      ============================================ */
 
   .btn {
+    position: relative;
+    overflow: hidden;      /* oculta la capa de barrido fuera */
+    isolation: isolate;    /* el ::before no escapa del botón */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -52,15 +56,26 @@ const linkAttrs = external
     font-family: var(--font-heading);
     font-weight: 600;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.35s ease;
     white-space: nowrap;
     line-height: 1;
   }
 
-  .btn:hover {
-    transform: translateY(-2px);
+  /* --- Capa de barrido: entra desde la izquierda --- */
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--sweep, rgba(8, 52, 147, 0.2));
+    transform: translateX(-101%);
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn:hover::before {
+    transform: translateX(0);
   }
 
   .btn:active {
@@ -74,7 +89,7 @@ const linkAttrs = external
   }
 
   .btn--md {
-    padding: 0.95rem 2.5rem;
+    padding: 16px 32px;
     font-size: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
   }
 
@@ -83,55 +98,53 @@ const linkAttrs = external
     font-size: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
   }
 
-  /* --- Variante: Primary (naranja, CTA principal) --- */
+  /* --- Variantes (cada una define su color de barrido) --- */
+
+  /* Primary: naranja, SIN glow (el sweep es el protagonista) */
   .btn--primary {
+    --sweep: #FE5000; 
     background-color: var(--color-secondary);
     color: #fff;
-    box-shadow: 0 4px 14px rgba(255, 107, 53, 0.3);
   }
 
-  .btn--primary:hover {
-    background-color: #FF8C5A;
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-  }
-
-  /* --- Variante: Dark (azul noche, secundario) --- */
+  /* Dark: azul noche */
   .btn--dark {
+    --sweep: var(--color-primary-alternativy);
     background-color: var(--color-primary);
     color: #fff;
   }
 
-  .btn--dark:hover {
-    background-color: var(--color-primary-light);
-  }
-
-  /* --- Variante: WhatsApp (verde oficial) --- */
+  /* WhatsApp: verde oficial*/
   .btn--whatsapp {
+    --sweep: #09a44f;
     background-color: #25D366;
     color: #fff;
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
   }
 
-  .btn--whatsapp:hover {
-    background-color: #20BD5A;
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-  }
-
-  /* --- Variante: Outline (borde, para fondos oscuros/imágenes) --- */
+  /* Outline: barrido blanco + texto cambia a azul */
   .btn--outline {
+    --sweep: #fff;
     background-color: transparent;
     color: #fff;
-    border: 2px solid #fff;
   }
 
   .btn--outline:hover {
-    background-color: #fff;
     color: var(--color-primary);
   }
 
-  /* --- Accesibilidad: foco visible con teclado --- */
+  /* --- Accesibilidad --- */
   .btn:focus-visible {
     outline: 3px solid var(--color-secondary);
     outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn::before {
+      transition: none;
+    }
+
+    .btn:hover {
+      transform: none;
+    }
   }
 </style>
