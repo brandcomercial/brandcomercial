@@ -390,6 +390,14 @@ export const siteConfig = {
     ]
   },
 
+    // --- Página Nosotros: Sección 7 (AssociatedBrands) ---
+  // Cuando tengas SVG, solo cambia la extensión aquí (config-driven)
+  associatedBrands: [
+    { name: "Nissan", src: "/nosotros/AssociatedBrands/nissan-logo.jpg" },
+    { name: "McDonalds", src: "/nosotros/AssociatedBrands/mcdonalds-logo.jpg" },
+    { name: "Nike", src: "/nosotros/AssociatedBrands/nike-logo.jpg" },
+  ],
+
 };
 
 // Helper para generar URL de WhatsApp

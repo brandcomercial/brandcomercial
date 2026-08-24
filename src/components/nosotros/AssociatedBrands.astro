@@ -1,0 +1,191 @@
+---
+/**
+ * AssociatedBrands.astro — Nosotros: marcas asociadas
+ * ============================================
+ * - Título palabra×palabra + AnimatedBar reutilizado
+ * - Marquee infinito seamless (2 mitades idénticas, margin-right en vez de gap)
+ * - Pausa al hover + grayscale → color original
+ * - Config-driven: logos desde site.ts (migrar a SVG = cambiar src)
+ */
+import { siteConfig } from '../../config/site';
+import AnimatedBar from '../ui/AnimatedBar.astro';
+
+const brands = siteConfig.associatedBrands;
+
+// Mitad = marcas ×2 (ancho suficiente); track = 2 mitades → loop seamless con -50%
+const half = [...brands, ...brands];
+const track = [...half, ...half];
+
+const words = (s: string) => s.split(' ').filter(Boolean);
+const titleW = words('Marcas **asociadas**');
+
+const tTitle = 0.1;
+const tBar = 0.5;
+const tMarquee = 0.7;
+---
+
+<section class="assoc" aria-label="Marcas asociadas">
+  <div
+    class="assoc__head"
+    data-animate
+    style={`--t-title: ${tTitle}s; --t-bar: ${tBar}s;`}
+  >
+    <h2 class="assoc__title aw">
+      {titleW.map((w, i) => {
+        const accent = w.startsWith('**') && w.endsWith('**');
+        const clean = accent ? w.slice(2, -2) : w;
+        return (
+          <span class={`w ${accent ? 'w--accent' : ''}`} style={`--w: ${i}`}>
+            {clean}&nbsp;
+          </span>
+        );
+      })}
+    </h2>
+
+    <div class="assoc__bar">
+      <AnimatedBar start={tBar} />
+    </div>
+  </div>
+
+  <div
+    class="assoc__marquee fade"
+    data-animate
+    style={`--start: ${tMarquee}s`}
+  >
+    <div class="assoc__track">
+      {track.map((b) => (
+        <img
+          class="assoc__logo"
+          src={b.src}
+          alt={`Logo de ${b.name}`}
+          loading="lazy"
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     ASSOCIATED-BRANDS.CSS — Marquee infinito
+     ============================================ */
+
+  .assoc {
+    padding: 4.5rem 0;
+    background-color: var(--color-bg);
+    overflow: hidden;
+  }
+
+  .assoc__head {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto 2.75rem;
+    text-align: center;
+  }
+
+  .assoc__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .w--accent {
+    color: var(--color-secondary);
+  }
+
+  .assoc__bar {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* --- Marquee --- */
+  .assoc__marquee {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    overflow: hidden;
+    opacity: 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .assoc__track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: assocMarquee 28s linear infinite;
+  }
+
+  /* Pausa al hover (legibilidad + accesibilidad) */
+  .assoc__marquee:hover .assoc__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes assocMarquee {
+    to { transform: translateX(-50%); }
+  }
+
+  /* --- Logos: grises → color al hover --- */
+  .assoc__logo {
+    height: 140px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    margin-right: 6rem; 
+    filter: grayscale(1);
+    opacity: 0.55;
+    transition: filter 0.35s ease, opacity 0.35s ease;
+  }
+
+  @media (max-width: 767px) {
+    .assoc__logo {
+      height: 90px;
+      margin-right: 3rem;
+    }
+  }
+
+  .assoc__logo:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+
+  /* --- Animaciones de entrada --- */
+  .aw .w {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .assoc__head.is-visible .aw .w {
+    animation: appear 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: calc(var(--t-title) + var(--w) * 0.04s);
+  }
+
+  .fade { opacity: 0; }
+
+  .assoc__marquee.is-visible {
+    animation: appear 0.7s ease forwards;
+    animation-delay: var(--start);
+  }
+
+  @keyframes appear {
+    to { opacity: 1; transform: translate(0, 0); }
+  }
+
+  /* --- Accesibilidad --- */
+  @media (prefers-reduced-motion: reduce) {
+    .assoc__track {
+      animation: none;
+    }
+
+    .aw .w,
+    .fade {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>
