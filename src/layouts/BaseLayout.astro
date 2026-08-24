@@ -6,9 +6,10 @@ import Footer from '../components/ui/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  footerFlush?: boolean; // true = última sección pegada al footer
 }
 
-const { title, description = "Especialistas en soluciones gráficas e impresión de gran formato." } = Astro.props;
+const { title, description = "Especialistas en soluciones gráficas e impresión de gran formato.", footerFlush = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -26,11 +27,13 @@ const { title, description = "Especialistas en soluciones gráficas e impresión
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Roboto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   </head>
   
-  <body>
+  <body class:list={['page', footerFlush && 'footer-flush']}>
     <Header />
     <main id="main">
       <slot />
     </main>
     <Footer />
-  </body>
-</html>
+</body>
+  
+  </html>
+  

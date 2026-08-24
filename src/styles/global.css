@@ -83,3 +83,12 @@ h1 {
   font-weight: 600;
   font-size: clamp(1rem, 2vw, 1.25rem);
 }
+
+/* ============================================
+   FOOTER FLUSH — páginas que terminan en banner
+   (se declara por página: <BaseLayout footerFlush>)
+   ============================================ */
+.footer-flush .site-footer,
+.footer-flush footer {
+  margin-top: 0 !important;
+}

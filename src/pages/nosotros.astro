@@ -7,14 +7,18 @@ import ClientsStats from '../components/nosotros/ClientsStats.astro'
 import WhyUs from '../components/nosotros/WhyUs.astro';
 import MissionVision from '../components/nosotros/MissionVision.astro';
 import AssociatedBrands from '../components/nosotros/AssociatedBrands.astro';
+import ContactBanner from '../components/nosotros/ContactBanner.astro';
 import { siteConfig } from '../config/site';
 import Benefits from '../components/home/Benefits.astro';
 ---
 
+
 <BaseLayout
   title="Nosotros"
   description="Conoce Brandcomercial: más de 12 años transformando marcas con soluciones gráficas profesionales."
+  footerFlush
 >
+
   <PageHero data={siteConfig.nosotrosHero} variant="about" />
   <Intro />
   <BenefitsPlus/>
@@ -22,9 +26,8 @@ import Benefits from '../components/home/Benefits.astro';
   <WhyUs/>
   <MissionVision/>
   <AssociatedBrands/>
-
+  <ContactBanner/>
 </BaseLayout>
-
 
 <script>
   import { initScrollReveal } from '../utils/scrollReveal';
