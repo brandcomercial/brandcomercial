@@ -263,7 +263,7 @@ export const siteConfig = {
       { value: "+12", label: "Años de experiencia" },
       { value: "+100", label: "Proyectos realizados" }
     ],
-    ctaBrochure: { text: "Descargar brochure", url: "/brochure BC 2026.pdf" },
+    ctaBrochure: { text: "Descargar brochure", url: "/brochure-BC2026.pdf" },
     image: "/home/about/grupo de trabajo.png"
   },
 
@@ -285,7 +285,13 @@ export const siteConfig = {
     image: "/nosotros/hero/grupo-trabajo.png",
     cta: { text: "Descargar catálogo", url: "/catalogo-brandcomercial2026.pdf", download: true },
     imageAlt: "Equipo Brandcomercial trabajando en proyecto de brandeo",
-    card: { value: "+12", label: "Años transformando marcas" }
+    card: { value: "+12", label: "Años transformando marcas" },
+    ctaSecondary: {
+    text: "Descargar brochure",
+    url: "/brochure-BC2026.pdf",
+    download: true
+    },
+
   },
 
 

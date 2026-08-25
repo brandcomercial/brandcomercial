@@ -9,13 +9,14 @@
  * - Coreografía: eyebrow → title(palabra) → text → cta | image → card
  * - Variantes vía prop: about | services | projects | contact
  */
-import Button from './Button.astro';
+import Button from "./Button.astro";
 
 interface HeroData {
   eyebrow: string;
   title: string;
   text: string;
   cta: { text: string; url: string; download?: boolean };
+  ctaSecondary?: { text: string; url: string; download?: boolean };
   image: string;
   imageAlt: string;
   card: { value: string; label: string };
@@ -23,15 +24,13 @@ interface HeroData {
 
 interface Props {
   data: HeroData;
-  variant?: 'about' | 'services' | 'projects' | 'contact';
+  variant?: "about" | "services" | "projects" | "contact";
 }
 
-
-
-const { data, variant = 'about' } = Astro.props;
+const { data, variant = "about" } = Astro.props;
 
 // --- Coreografía ---
-const words = (s: string) => s.split(' ').filter(Boolean);
+const words = (s: string) => s.split(" ").filter(Boolean);
 const titleW = words(data.title);
 const WORD = 0.04;
 
@@ -57,19 +56,38 @@ const tCard = tImage + 0.6;
       </p>
 
       <h1 class="page-hero__title aw">
-        {titleW.map((w, i) => <span class="w" style={`--w: ${i}`}>{w}&nbsp;</span>)}
+        {
+          titleW.map((w, i) => (
+            <span class="w" style={`--w: ${i}`}>
+              {w}&nbsp;
+            </span>
+          ))
+        }
       </h1>
 
       <p class="page-hero__text anim anim--up">{data.text}</p>
 
       <div class="page-hero__cta anim anim--left">
-                <Button href={data.cta.url} variant="primary" size="md" download={data.cta.download ?? false}>
+        <Button
+          href={data.cta.url}
+          variant="primary"
+          size="md"
+          download={data.cta.download ?? false}>
           {data.cta.text}
         </Button>
+        {data.ctaSecondary && (
+          <Button
+            href={data.ctaSecondary.url}
+            variant="outline"
+            size="md"
+            download={data.ctaSecondary.download ?? false}>
+            {data.ctaSecondary.text}
+          </Button>
+        )}
       </div>
     </div>
 
-    <!-- Columna 2: blob + tarjeta glass -->
+    <!-- Columna 2: blob + tarjeta glass (DENTRO del container) -->
     <div class="page-hero__visual">
       <figure class="page-hero__blob rise">
         <img src={data.image} alt={data.imageAlt} />
@@ -93,16 +111,24 @@ const tCard = tImage + 0.6;
     align-items: center;
     padding: 6rem 0 3rem;
     background:
-      radial-gradient(ellipse at 15% 20%, rgba(255, 107, 53, 0.12), transparent 50%),
-      radial-gradient(ellipse at 85% 80%, rgba(30, 58, 95, 0.5), transparent 60%),
-      linear-gradient(135deg, #0A192F 0%, #16324F 60%, #1E3A5F 100%);
+      radial-gradient(
+        ellipse at 15% 20%,
+        rgba(255, 107, 53, 0.12),
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at 85% 80%,
+        rgba(30, 58, 95, 0.5),
+        transparent 60%
+      ),
+      linear-gradient(135deg, #0a192f 0%, #16324f 60%, #1e3a5f 100%);
     position: relative;
     overflow: hidden;
   }
 
   /* Patrón de ondas sutil (futurista) */
   .page-hero::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background-image: repeating-linear-gradient(
@@ -142,18 +168,38 @@ const tCard = tImage + 0.6;
   }
 
   /* --- Mapeo de delays --- */
-  .page-hero__eyebrow { --start: var(--t-eyebrow); }
-  .page-hero__title { --start: var(--t-title); }
-  .page-hero__text { --start: var(--t-text); }
-  .page-hero__cta { --start: var(--t-cta); }
-  .page-hero__blob { --start: var(--t-image); }
-  .page-hero__card { --start: var(--t-card); }
+  .page-hero__eyebrow {
+    --start: var(--t-eyebrow);
+  }
+  .page-hero__title {
+    --start: var(--t-title);
+  }
+  .page-hero__text {
+    --start: var(--t-text);
+  }
+  .page-hero__cta {
+    --start: var(--t-cta);
+  }
+  .page-hero__blob {
+    --start: var(--t-image);
+  }
+  .page-hero__card {
+    --start: var(--t-card);
+  }
 
   /* --- Estados iniciales --- */
-  .anim { opacity: 0; }
-  .anim--down { transform: translateY(-25px); }
-  .anim--up { transform: translateY(25px); }
-  .anim--left { transform: translateX(-40px); }
+  .anim {
+    opacity: 0;
+  }
+  .anim--down {
+    transform: translateY(-25px);
+  }
+  .anim--up {
+    transform: translateY(25px);
+  }
+  .anim--left {
+    transform: translateX(-40px);
+  }
 
   .aw .w {
     display: inline-block;
@@ -161,12 +207,17 @@ const tCard = tImage + 0.6;
     transform: translateY(30px);
   }
 
-  .rise { opacity: 0; transform: translateY(40px) scale(0.96); }
-  .fade-only { opacity: 0; }
+  .rise {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  .fade-only {
+    opacity: 0;
+  }
 
   /* --- Disparadores --- */
-    .page-hero__container.is-visible .anim,
-    .page-hero__container.is-visible .rise {
+  .page-hero__container.is-visible .anim,
+  .page-hero__container.is-visible .rise {
     animation: appear 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: var(--start);
   }
@@ -178,7 +229,9 @@ const tCard = tImage + 0.6;
   }
 
   @keyframes fadeIn {
-    to { opacity: 1; }
+    to {
+      opacity: 1;
+    }
   }
 
   .page-hero__container.is-visible .aw .w {
@@ -187,7 +240,10 @@ const tCard = tImage + 0.6;
   }
 
   @keyframes appear {
-    to { opacity: 1; transform: translate(0, 0) scale(1); }
+    to {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
   }
 
   /* --- Contenido --- */
@@ -233,8 +289,14 @@ const tCard = tImage + 0.6;
     margin-bottom: 2rem;
   }
 
+  .page-hero__cta{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
   /* Botón con glow naranja (neón de marca) */
-  .page-hero__cta :global(.button) {
+  .page-hero__cta :global(.btn) {
     box-shadow: 0 0 25px rgba(255, 107, 53, 0.45);
   }
 
@@ -257,7 +319,7 @@ const tCard = tImage + 0.6;
   }
 
   /* El morph corre infinito DESPUÉS de aparecer */
-    .page-hero__container.is-visible .page-hero__blob {
+  .page-hero__container.is-visible .page-hero__blob {
     animation:
       appear 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
       blobMorph 12s ease-in-out 1s infinite,
@@ -268,14 +330,26 @@ const tCard = tImage + 0.6;
   /* Flotación vertical: usa la propiedad `translate` (independiente de
      `transform`), por eso NO pelea con la animación de entrada */
   @keyframes blobFloat {
-    0%, 100% { translate: 0 0; }
-    50% { translate: 0 -15px; }
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -15px;
+    }
   }
 
   @keyframes blobMorph {
-    0%, 100% { border-radius: 58% 42% 45% 55% / 48% 45% 55% 52%; }
-    33% { border-radius: 45% 55% 52% 48% / 55% 48% 52% 45%; }
-    66% { border-radius: 52% 48% 45% 55% / 45% 55% 48% 52%; }
+    0%,
+    100% {
+      border-radius: 58% 42% 45% 55% / 48% 45% 55% 52%;
+    }
+    33% {
+      border-radius: 45% 55% 52% 48% / 55% 48% 52% 45%;
+    }
+    66% {
+      border-radius: 52% 48% 45% 55% / 45% 55% 48% 52%;
+    }
   }
 
   .page-hero__blob img {
@@ -326,17 +400,22 @@ const tCard = tImage + 0.6;
   }
 
   /* --- Variantes por página --- */
-  .page-hero[data-variant='contact'] .page-hero__blob {
+  .page-hero[data-variant="contact"] .page-hero__blob {
     border-radius: 1.5rem;
   }
 
-  .page-hero[data-variant='contact'] .page-hero__container.is-visible .page-hero__blob {
+  .page-hero[data-variant="contact"]
+    .page-hero__container.is-visible
+    .page-hero__blob {
     animation: appear 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 
   /* --- Accesibilidad --- */
   @media (prefers-reduced-motion: reduce) {
-    .anim, .aw .w, .rise, .fade {
+    .anim,
+    .aw .w,
+    .rise,
+    .fade {
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
@@ -353,27 +432,31 @@ const tCard = tImage + 0.6;
   /**
    * Efecto magnético en la tarjeta glass:
    * sigue al cursor (20% de la distancia) y vuelve suave al soltar.
+   * FIX: usa la propiedad CSS `translate` (independiente de `transform`)
+   * para no pelear con la animación de entrada (fadeIn forwards).
    */
-  document.addEventListener('DOMContentLoaded', () => {
-    const card = document.querySelector<HTMLElement>('.page-hero__card');
+  document.addEventListener("DOMContentLoaded", () => {
+    const card = document.querySelector<HTMLElement>(".page-hero__card");
     if (!card) return;
 
-    // Solo con hover real y sin reduced-motion (accesibilidad)
-    const canHover = window.matchMedia('(hover: hover)').matches;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (!canHover || reduced) return;
 
     const STRENGTH = 0.2;
 
-    card.addEventListener('mousemove', (e) => {
+    card.addEventListener("mousemove", (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - (rect.left + rect.width / 2);
       const y = e.clientY - (rect.top + rect.height / 2);
-      card.style.transform = `translate(${x * STRENGTH}px, ${y * STRENGTH}px)`;
+      // `translate` es independiente de `transform` → no pelea con animaciones
+      card.style.translate = `${x * STRENGTH}px ${y * STRENGTH}px`;
     });
 
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'translate(0, 0)';
+    card.addEventListener("mouseleave", () => {
+      card.style.translate = "0 0";
     });
   });
 </script>
